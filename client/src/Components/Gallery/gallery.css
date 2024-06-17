@@ -1,0 +1,157 @@
+.gallery {
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 15px;
+  background-color: #ffff !important;
+}
+
+.gallery_container {
+  border: 2px dotted #afafafdd;
+  padding: 10px;
+  border-radius: 25px;
+  width: 100%;
+  min-height: 90vh;
+  background-color: #f6faf6;
+}
+
+.gallery_head {
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #bebebedd;
+}
+
+.gallery_head h2 {
+  background: linear-gradient(to right, #2c3d59, #85f792);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 30px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.g_function_details {
+  flex-direction: column;
+}
+
+.g_function_details > P {
+  text-align: right;
+}
+
+.g_function_details > p:nth-child(1) {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.g_function_details > p:nth-child(2) {
+  font-size: 10px;
+}
+
+.g_function_details > p:nth-child(3) {
+  font-size: 10px;
+}
+
+.g_function_details > p:nth-child(4) {
+  font-size: 10px;
+}
+
+.photos_wrapper {
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 30px 5px;
+  gap: 25px;
+}
+
+.photo {
+  border-radius: 7px;
+  width: 180px;
+  transition: 0.2s ease-in-out;
+}
+
+.photo:hover,
+.function_image:hover .photo {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  transition: 0.2s ease-in-out;
+  background-color: #ffff;
+}
+
+.function_image {
+  position: relative;
+}
+
+.download_added_image {
+  width: 35px;
+  height: 35px;
+  background-color: #00c000;
+  border-radius: 50px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  z-index: 1;
+}
+
+.function_image:hover .download_added_image {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.download_added_image:hover {
+  background-color: #00a600;
+}
+
+.wrong_id {
+  flex-direction: column;
+  gap: 15px;
+}
+
+.wrong_id p {
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #c00000;
+}
+
+.wrong_id p:hover {
+  color: black;
+}
+
+.gratitude {
+  margin-top: 25px;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (max-width: 799px) {
+  .gallery_head {
+    padding: 10px 5px;
+  }
+
+  .g_function_details > p:nth-child(1) {
+    font-size: 11px;
+  }
+
+  .g_function_details > p:nth-child(2) {
+    font-size: 9px;
+  }
+
+  .photos_wrapper {
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 30px 5px;
+    gap: 15px;
+  }
+
+  .download_added_image {
+    width: 45px;
+    height: 45px;
+    right: 35px;
+  }
+
+  .photo {
+    width: 95%;
+  }
+
+  .gratitude {
+    font-size: 8px;
+  }
+}

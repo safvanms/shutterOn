@@ -1,0 +1,176 @@
+.admin {
+  padding: 15px;
+  min-height: 90vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.admin_header {
+  padding: 10px;
+  border-bottom: 1px solid var(--bg);
+}
+
+.admin_header h1 {
+  font-size: 28px;
+  background: linear-gradient(to right, #2c3d59, #66e074);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.filter_table {
+  margin-top: 10px;
+}
+
+.filter_table input {
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-size: 12px;
+  border: 1px solid #979797;
+}
+
+.admin_login_no_user {
+  min-height: 90vh;
+  flex-direction: column;
+}
+
+.admin_login_no_user h2 {
+  color: #3a3a3a;
+}
+
+.admin_login_no_user h2:hover {
+  cursor: pointer;
+  color: black;
+}
+
+/* admin table */
+
+.admin_table {
+  margin-top: 20px;
+  /* overflow-x: auto; */
+  justify-content: flex-start !important;
+}
+
+.admin_table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin_table th {
+  background-color: #2c3d59 !important;
+  color: #f5f5f5;
+  font-weight: lighter !important;
+}
+
+.admin_table th:nth-child(1) {
+  border-radius: 10px 0 0 0;
+}
+.admin_table th:nth-child(7) {
+  border-radius: 0 10px 0 0;
+}
+
+.admin_table th,
+.admin_table td {
+  padding: 12px 15px;
+  text-align: left !important;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin_table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.admin_table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.admin_table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.admin_table th,
+.admin_table td {
+  text-align: center;
+}
+
+/* admin login */
+
+.admin_login {
+  height: 90vh;
+  flex-direction: column;
+}
+
+.admin_login img {
+  width: 250px;
+}
+
+.admin_login_form {
+  border: 1px solid #9d9d9d;
+  padding: 20px;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.admin_login_form form {
+  margin-top: 15px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin_login_form h2 {
+  color: #313131;
+}
+
+.admin_login_form form input {
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  border: 1px solid #d7d4d4;
+}
+
+.admin_login_form button {
+  padding: 8px 15px;
+  background-color: #bd0e0e;
+  color: #ffff;
+  border-radius: 10px;
+  border: none;
+  min-width: 100px;
+}
+
+.admin_login_form button:hover {
+  background-color: #a90909;
+}
+
+/* users details */
+
+.admin_user_details {
+  padding: 15px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.admin_user_details p {
+  font-size: 15px;
+}
+
+/* Admin page user Events */
+
+.a_user_events {
+  padding: 15px;
+  min-height: 90vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.event_details {
+  margin-top: 15px;
+}
+
+.a_users_event_gallery {
+  margin-top: 15px;
+  border: 1px solid gray;
+  flex-wrap: wrap;
+}

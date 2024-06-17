@@ -1,0 +1,17 @@
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #092635;
+  --secondary: #1b4242;
+  --bg: #f6f9f4;
+}
+
+.Flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

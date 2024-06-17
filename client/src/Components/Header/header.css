@@ -1,0 +1,46 @@
+.header {
+  background-color: #ffff;
+  padding: 15px 25px;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.logo_Container {
+  gap: 6px;
+  cursor: pointer;
+}
+
+.logo_Container h1 {
+  font-size: 26px;
+  background: linear-gradient(to right, #2c3d59, #66e074);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+  width: 40px;
+}
+
+.login_btn {
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.login_btn:hover {
+  color: #2c3d59;
+}
+
+@media (max-width: 799px) {
+  .header {
+    padding: 15px;
+  }
+  .logo_Container h1 {
+    display: none;
+  }
+}

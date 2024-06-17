@@ -1,0 +1,9 @@
+.sign_btn {
+  font-size: 13px;
+}
+
+.sign_btn span {
+  font-weight: 800;
+  color: #070785;
+  cursor: pointer;
+}
