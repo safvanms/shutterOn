@@ -53,21 +53,36 @@
   margin: 20px 0;
   border-radius: 15px;
   padding: 10px;
-  background-color: #f6faf6;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.add_photo_option {
+  border: 2px dashed #2c3d59;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  color: #2c3d59;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add_photo_option:hover{
+  background-color: #46484b;
+  color: #ffffff;
 }
 
 .add_photo_option {
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   position: fixed;
   top: 20%;
   right: 50px;
   background-color: #cdcdcd;
-  min-width: 100px;
-  min-height: 100px;
-  padding: 10px;
-  border-radius: 25px;
+  min-width: 150px;
+  min-height: 150px;
+  padding: 15px;
+  border-radius: 40px;
   z-index: 9999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .add_photo_option input {
@@ -86,7 +101,7 @@
 
 .added_image_img {
   border-radius: 7px;
-  width: 180px;
+  width: 150px;
 }
 
 .added_image_img:hover {

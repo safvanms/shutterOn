@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
+import Loader from "../Loader/Loader";
 
 const Host = () => {
   const [functionData, setFunctionData] = useState(null);
@@ -12,6 +13,7 @@ const Host = () => {
   const [cld, setCld] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setCld(new Cloudinary({ cloud: { cloudName: "dqkb2musv" } }));
@@ -40,6 +42,7 @@ const Host = () => {
   const handleConfirmPhoto = () => {
     if (selectedPhoto) {
       setConfirmed(true);
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("photo", selectedPhoto);
 
@@ -65,6 +68,7 @@ const Host = () => {
               setGalleryPhotos(updatedGallery);
               setSelectedPhoto(null);
               setConfirmed(false);
+              setIsLoading(false);
             })
             .catch((error) => {
               console.error("Error updating gallery:", error);
@@ -81,6 +85,7 @@ const Host = () => {
       "This photo will be deleted permanently from the Server"
     );
     if (confirmed) {
+      setIsLoading(true);
       axios
         .delete(
           `http://localhost:3001/delete-photo/${userId}/${functionID}/${encodeURIComponent(
@@ -93,6 +98,7 @@ const Host = () => {
             prevGalleryPhotos.filter((photo) => photo !== photoUrl)
           );
           setDeleted(true);
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Error deleting photo:", error);
@@ -122,6 +128,9 @@ const Host = () => {
 
       <div className="host">
         <div className="add_photo_option Flex">
+          <label htmlFor="fileInput" className="custom_file_input">
+            Choose a Photo
+          </label>
           <input type="file" onChange={handleFileChange} accept="image/*" />
           {selectedPhoto && (
             <div className="photo_preview Flex">
@@ -140,6 +149,8 @@ const Host = () => {
             </div>
           )}
         </div>
+
+        {isLoading && <Loader message={'Please Wait...'}/>}
 
         <div className="gallery_photos Flex">
           {galleryPhotos.length > 0 ? (

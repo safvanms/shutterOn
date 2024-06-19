@@ -1,5 +1,8 @@
 import React from "react";
 import "./admin.css";
+import NOUSER from "../../assets/noUser.png";
+import { useUser } from "../../auth";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = ({
   handleLogIn,
@@ -9,6 +12,18 @@ const AdminLogin = ({
   setInputPassword,
   error,
 }) => {
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  if (!user) {
+    return (
+      <div className="admin_login_no_user Flex" onClick={() => navigate("/login")}>
+        <img src={NOUSER} alt="noUser" />
+        <h2>Please log in to the website first.</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="admin_login Flex">
       <div className="admin_login_form Flex">

@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useUser } from "../../auth"; // Adjust the import path as necessary
 import "./admin.css";
 import AdminLogin from "./AdminLogin";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import NOUSER from "../../assets/noUser.png";
 
 const userName = "shutterOn@1";
 const password = "shutterOn@1";
 const EXPIRATION_TIME = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+const ITEMS_PER_PAGE = 10;
 
 const Admin = () => {
-  const { user } = useUser();
   const [logged, setLogged] = useState(false);
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [error, setError] = useState("");
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState(""); // State for filtering the users
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -75,15 +74,6 @@ const Admin = () => {
     setFilter(e.target.value);
   };
 
-  if (!user) {
-    return (
-      <div className="admin_login_no_user Flex" onClick={navigate("/")}>
-        <img src={NOUSER} alt="noUser" />
-        <h2>Please log in to the website first.</h2>
-      </div>
-    );
-  }
-
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(filter.toLowerCase()) ||
@@ -92,6 +82,19 @@ const Admin = () => {
   );
 
   const eventHostedUsers = users.filter((user) => user.events.length > 0);
+
+  // Calculate pagination variables
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+  const lastIndex = currentPage * ITEMS_PER_PAGE;
+  const firstIndex = lastIndex - ITEMS_PER_PAGE;
+  const currentItems = filteredUsers.slice(firstIndex, lastIndex);
+
+  // Change page
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <>
@@ -111,43 +114,68 @@ const Admin = () => {
           </div>
 
           <div className="admin_table">
-            {filteredUsers.length === 0 ? (
+            {currentItems.length === 0 ? (
               <p style={{ marginTop: "100px" }}>Oops! No user found !</p>
             ) : (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Sl no</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Password</th>
-                    <th>UserID</th>
-                    <th>Events</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user, index) => (
-                    <tr key={user.userId}>
-                      <td>{index + 1}</td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone}</td>
-                      <td>{user.password}</td>
-                      <td>{user.userId}</td>
-                      <td>
-                        {user.events.length > 0 ? (
-                          <button onClick={() => handleOpenEvents(user.userId)}>
-                            View {user.events.length} Events
-                          </button>
-                        ) : (
-                          user.events.length + " Events"
-                        )}
-                      </td>
+              <>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sl no</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Password</th>
+                      <th>UserID</th>
+                      <th>Events</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {currentItems.map((user, index) => (
+                      <tr key={user.userId}>
+                        <td>{firstIndex + index + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phone}</td>
+                        <td>{user.password}</td>
+                        <td>{user.userId}</td>
+                        <td>
+                          {user.events.length > 0 ? (
+                            <button
+                              className="event_show_button"
+                              onClick={() => handleOpenEvents(user.userId)}
+                            >
+                              View{" "}
+                              {+user.events.length === 1
+                                ? user.events.length + " Event "
+                                : user.events.length + " Events "}
+                            </button>
+                          ) : (
+                            <p className="no_event">No events</p>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* Pagination */}
+                <div className="pagination Flex">
+                  <button
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Prev
+                  </button>
+                  &nbsp; {currentPage} of {totalPages}
+                  &nbsp;
+                  <button
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={lastIndex >= filteredUsers.length}
+                  >
+                    Next
+                  </button>
+                </div>
+              </>
             )}
             <div className="admin_user_details Flex">
               <p>

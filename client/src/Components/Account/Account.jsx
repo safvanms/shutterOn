@@ -58,15 +58,17 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
         {!userData && <p>Loading...</p>}
 
         <div className="btns Flex">
-          <select onChange={handleEventSelect} className="account_select">
-            <option value="">Go to Previous Events</option>
-            {events.map((event) => (
-              <option key={event.functionID} value={event.functionID}>
-                {event.functionName} -{" "}
-                {new Date(event.functionDate).toLocaleDateString()}
-              </option>
-            ))}
-          </select>
+          {events.length > 0 && (
+            <select onChange={handleEventSelect} className="account_select">
+              <option value="">Go to Previous Events</option>
+              {events.map((event) => (
+                <option key={event.functionID} value={event.functionID}>
+                  {event.functionName} -{" "}
+                  {new Date(event.functionDate).toLocaleDateString()}
+                </option>
+              ))}
+            </select>
+          )}
 
           {!window.location.pathname.includes("/host") && (
             <button className="host_btn" onClick={() => handleHost(userId)}>

@@ -37,7 +37,7 @@ const Signin = () => {
   };
 
   const validatePassword = (password) => {
-    const re = /^(?=.*[0-9]).{8,}$/; // At least one number and at least 8 characters long
+    const re = /^(?=.*[0-9])(?=.*[!@#$&])(?=.*[A-Z]).{8,}$/;
     return re.test(password);
   };
 
@@ -64,7 +64,7 @@ const Signin = () => {
     // Validate password
     if (!validatePassword(password)) {
       formErrors.password =
-        "Password must contain a number and be at least 8 characters long";
+        "At least one Uppercase letter ,one Number , one special Character (@,#,$,&) and Minimum of 8 character long";
     }
 
     // Validate passwords match
@@ -80,7 +80,7 @@ const Signin = () => {
     // Clear errors if validation passes
     setErrors({});
 
-    const userId = new Date().getTime();
+    const userId = "_SO" + Date.now();
 
     try {
       const response = await axios.post("http://localhost:3001/users", {
@@ -92,7 +92,7 @@ const Signin = () => {
       });
 
       const userData = {
-        userId:response.data.userId,
+        userId: response.data.userId,
         name: response.data.name,
         email: response.data.email,
         phone: response.data.phone,

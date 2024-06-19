@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 function HostForm() {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
+  const [functionIdError, setFunctionIdError] = useState(null);
   const [formData, setFormData] = useState({
     functionName: "",
     functionDate: "",
@@ -30,10 +31,28 @@ function HostForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    if (name === "functionID") {
+      const sanitizedValue = value.toLowerCase().replace(/[\s']/g, "");
+
+      if (sanitizedValue !== value) {
+        setFunctionIdError(
+          "Function ID must not include spaces or apostrophes and should be lowercase."
+        );
+      } else {
+        setFunctionIdError("");
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: sanitizedValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const navigate = useNavigate();
@@ -50,7 +69,9 @@ function HostForm() {
 
     // Check if the entered function ID already exists
     axios
-      .get(`http://localhost:3001/events/check-function-id/${newEvent.functionID}`)
+      .get(
+        `http://localhost:3001/events/check-function-id/${newEvent.functionID}`
+      )
       .then((response) => {
         // If function ID is available, proceed to add the event
         axios
@@ -62,7 +83,9 @@ function HostForm() {
           .catch((error) => {
             console.error("Error adding event:", error);
             const errorMessage =
-              (error.response && error.response.data && error.response.data.error) ||
+              (error.response &&
+                error.response.data &&
+                error.response.data.error) ||
               "An error occurred while adding the event. Please try again.";
             alert(errorMessage);
           });
@@ -70,12 +93,13 @@ function HostForm() {
       .catch((error) => {
         console.error("Error checking function ID:", error);
         const errorMessage =
-          (error.response && error.response.data && error.response.data.error) ||
+          (error.response &&
+            error.response.data &&
+            error.response.data.error) ||
           "An error occurred while checking the Function ID. Please try again.";
         alert(errorMessage);
       });
   };
-
 
   return (
     <div className="host_form_container Flex">
@@ -109,7 +133,7 @@ function HostForm() {
             placeholder="Calicut"
             required
           />
-          <label htmlFor="provider">Name of Groom / Provider</label>
+          <label htmlFor="provider">Name of Groom / Provider *</label>
           <input
             type="text"
             name="provider"
@@ -128,6 +152,7 @@ function HostForm() {
             placeholder="jon_weds_tessa0123"
             required
           />
+          {functionIdError && <p className="error">{functionIdError}</p>}
           <label htmlFor="hostingTeam">Hosting Team / Person *</label>
           <input
             type="text"
@@ -147,7 +172,7 @@ function HostForm() {
             required
           />
           <button type="submit" className="submit_form">
-            Submit
+            Pay now
           </button>
         </div>
       </form>

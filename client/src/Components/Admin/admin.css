@@ -96,6 +96,28 @@
   text-align: center;
 }
 
+.pagination{
+  margin-top: 15px;
+}
+
+.event_show_button{
+  border: none;
+  background-color: lightgreen;
+  color: green;
+  border-radius: 5px;
+  padding: 5px 8px;
+  min-width: 90px;
+}
+
+.event_show_button:hover{
+  background-color: #8fd68f;
+  color: rgb(1, 88, 1);
+}
+
+.no_event{
+  color: #e30000;
+}
+
 /* admin login */
 
 .admin_login {
@@ -153,7 +175,7 @@
 }
 
 .admin_user_details p {
-  font-size: 15px;
+  font-size: 18px;
 }
 
 /* Admin page user Events */
@@ -165,12 +187,66 @@
   justify-content: flex-start;
 }
 
+.admin_event_select {
+  padding: 8px 15px;
+  border-radius: 10px;
+}
+
 .event_details {
   margin-top: 15px;
+  width: 100%;
+}
+
+.event_details p{
+ text-align: center;
+}
+
+.a_event_details_heading {
+  justify-content: space-between;
+}
+
+.a_event_details_heading > div:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.a_event_details_heading > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .a_users_event_gallery {
   margin-top: 15px;
   border: 1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+  rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  border-radius: 7px;
   flex-wrap: wrap;
+  gap: 5px;
+  padding: 20px;
+  min-height: 80vh;
+  align-items: flex-start;
+}
+
+.a_users_event_gallery .photo {
+  width: 150px;
+}
+
+.a_users_event_gallery p{
+  margin: 10px 0;
+}
+
+
+@media (max-width: 799px) {
+  .a_event_details_heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .a_event_details_heading > div:nth-child(2) {
+    align-items: flex-start;
+  }
 }

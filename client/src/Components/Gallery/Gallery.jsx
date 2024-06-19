@@ -32,6 +32,8 @@ const Gallery = () => {
     fetchGalleryImages();
   }, [id]);
 
+  // download photos for users
+
   const handleDownload = (imageUrl) => {
     // Create an anchor element
     const anchor = document.createElement("a");
@@ -67,8 +69,8 @@ const Gallery = () => {
                 <>
                   <p>{data.functionName}</p>
                   <p>Date : {Day(data.functionDate)}</p>
-                  <p>shutterOn ID : {data.functionID}</p>
-                  <p>Hosted by : {data.hostingTeam}</p>
+                  <p>Event ID : {data.functionID}</p>
+                  <p>Hosting : {data.hostingTeam}</p>
                 </>
               )}
             </div>

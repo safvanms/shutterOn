@@ -2,16 +2,16 @@
   flex-direction: column;
   min-height: 100vh;
   padding: 15px;
-  background-color: #ffff !important;
+  background-color: #ffff;
 }
 
 .gallery_container {
-  border: 2px dotted #afafafdd;
+  border: 3px dotted #afafafdd;
   padding: 10px;
   border-radius: 25px;
   width: 100%;
   min-height: 90vh;
-  background-color: #f6faf6;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .gallery_head {
@@ -56,13 +56,13 @@
 .photos_wrapper {
   justify-content: center;
   flex-wrap: wrap;
-  padding: 30px 5px;
+  padding: 10px 5px;
   gap: 25px;
 }
 
 .photo {
   border-radius: 7px;
-  width: 180px;
+  width: 150px;
   transition: 0.2s ease-in-out;
 }
 
@@ -148,7 +148,7 @@
   }
 
   .photo {
-    width: 95%;
+    width: 100%;
   }
 
   .gratitude {
