@@ -55,7 +55,11 @@ const storage = multer.diskStorage({
   },
 });
 
+
+
 const upload = multer({ storage: storage });
+
+// upload photos
 
 app.post("/upload", upload.single("photo"), (req, res) => {
   const file = req.file;
@@ -74,11 +78,18 @@ app.post("/upload", upload.single("photo"), (req, res) => {
 
 
 
+// Delete photo endpoint
 app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
   const { userId, functionID, photoUrl } = req.params;
 
+  // Decode the photo URL
+  const decodedPhotoUrl = decodeURIComponent(photoUrl);
+
+  // Extract the public_id from the photo URL for Cloudinary
+  const publicId = decodedPhotoUrl.split('/').pop().split('.')[0];
+
   // Delete image from Cloudinary
-  cloudinary.uploader.destroy(photoUrl, (error, result) => {
+  cloudinary.uploader.destroy(publicId, (error, result) => {
     if (error) {
       console.error("Error deleting photo from Cloudinary:", error);
       return res.status(500).json({ error: "Internal server error" });
@@ -87,7 +98,7 @@ app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
     // Delete image URL from the gallery in the database
     UserModel.findOneAndUpdate(
       { userId, "events.functionID": functionID },
-      { $pull: { "events.$.gallery": photoUrl } },
+      { $pull: { "events.$.gallery": decodedPhotoUrl } },
       { new: true, useFindAndModify: false }
     )
       .then(() => {
@@ -124,6 +135,8 @@ app.post("/login", (req, res) => {
   });
 });
 
+
+
 app.post("/users", (req, res) => {
   const { email } = req.body;
 
@@ -138,6 +151,8 @@ app.post("/users", (req, res) => {
   });
 });
 
+
+
 // for admin page
 
 app.get("/users", (req, res) => {
@@ -150,6 +165,8 @@ app.get("/users", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
+
+
 
 app.post("/users/:userId/events", (req, res) => {
   const userId = req.params.userId;
@@ -184,6 +201,8 @@ app.post("/users/:userId/events", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
+
+
 
 app.get("/user/:id", (req, res) => {
   const userId = req.params.id;
@@ -237,6 +256,8 @@ app.get("/events/check-function-id/:functionID", (req, res) => {
     });
 });
 
+
+
 app.get("/host/:userId/:functionID", (req, res) => {
   const { userId, functionID } = req.params;
 
@@ -259,37 +280,24 @@ app.get("/host/:userId/:functionID", (req, res) => {
     });
 });
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/"); // Specify the directory where uploaded files will be stored
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename for the uploaded file
-//   },
-// });
-// const upload = multer({ storage: storage });
+// Fetch event details by functionID (for admin page)
+app.get("/get-event/:functionID", (req, res) => {
+  const { functionID } = req.params;
 
-// app.get("/host/:userId/:functionID", (req, res) => {
-//   const { userId, functionID } = req.params;
+  UserModel.findOne({ "events.functionID": functionID })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: "Event not found" });
+      }
+      const event = user.events.find((event) => event.functionID === functionID);
+      res.json(event);
+    })
+    .catch((error) => {
+      console.error("Error fetching event:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+});
 
-//   UserModel.findOne({ userId })
-//     .then((user) => {
-//       if (!user) {
-//         return res.status(404).json({ error: "User not found" });
-//       }
-//       const event = user.events.find(
-//         (event) => event.functionID === functionID
-//       );
-//       if (!event) {
-//         return res.status(404).json({ error: "Event not found" });
-//       }
-//       res.json(event);
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching function data:", error);
-//       res.status(500).json({ error: "Internal server error" });
-//     });
-// });
 
 app.listen(3001, () => {
   console.log("server is running");
