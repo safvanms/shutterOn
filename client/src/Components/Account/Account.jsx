@@ -19,6 +19,8 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
         setUserData(userResponse.data);
         setEvents(userResponse.data.events);
 
+        // fetching froze status
+
         const userDetailResponse = await axios.get(
           `http://localhost:3001/users/${userId}`
         );
