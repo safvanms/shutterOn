@@ -54,3 +54,7 @@ label {
 .submit_form:hover {
   background-color: var(--primary);
 }
+
+.razorpay-container .razorpay-modal iframe {
+  height: 80vh;
+}

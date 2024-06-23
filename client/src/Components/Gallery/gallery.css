@@ -6,7 +6,7 @@
 }
 
 .gallery_container {
-  border: 3px dotted #afafafdd;
+  /* border: 3px dotted #afafafdd; */
   padding: 10px;
   border-radius: 25px;
   width: 100%;
@@ -56,19 +56,19 @@
 .photos_wrapper {
   justify-content: center;
   flex-wrap: wrap;
-  padding: 10px 5px;
+  padding: 20px 5px;
   gap: 25px;
 }
 
 .photo {
   border-radius: 7px;
-  width: 150px;
+  width: 250px;
   transition: 0.2s ease-in-out;
 }
 
 .photo:hover,
 .function_image:hover .photo {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   transition: 0.2s ease-in-out;
   background-color: #ffff;
 }
@@ -78,15 +78,20 @@
 }
 
 .download_added_image {
-  width: 35px;
-  height: 35px;
-  background-color: #00c000;
-  border-radius: 50px;
+  background-color: #0fce7e;
+  border-radius: 15px;
   position: absolute;
   bottom: 20px;
   right: 20px;
   display: none;
   z-index: 1;
+  padding: 7px 15px;
+  gap: 5px;
+}
+
+.download_added_image p{
+font-size: 11px;
+color: #ffff;
 }
 
 .function_image:hover .download_added_image {
@@ -96,12 +101,24 @@
 }
 
 .download_added_image:hover {
-  background-color: #00a600;
+  background-color: #0fdd87c2;
 }
 
 .wrong_id {
   flex-direction: column;
   gap: 15px;
+}
+
+.re_enter{
+  text-align: center;
+  margin-top: 15px;
+  color: blue;
+  cursor: pointer;
+}
+
+.re_enter:hover{
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .wrong_id p {
@@ -117,7 +134,7 @@
 
 .gratitude {
   margin-top: 25px;
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -139,12 +156,6 @@
     flex-wrap: wrap;
     padding: 30px 5px;
     gap: 15px;
-  }
-
-  .download_added_image {
-    width: 45px;
-    height: 45px;
-    right: 35px;
   }
 
   .photo {

@@ -11,7 +11,7 @@
 }
 
 .logo_Container {
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
 }
 
@@ -20,7 +20,6 @@
   background: linear-gradient(to right, #2c3d59, #66e074);
   -webkit-background-clip: text;
   color: transparent;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .logo {
@@ -40,7 +39,7 @@
   .header {
     padding: 15px;
   }
-  .logo_Container h1 {
+  /* .logo_Container h1 {
     display: none;
-  }
+  } */
 }

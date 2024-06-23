@@ -19,7 +19,7 @@ const AdminLogin = ({
     return (
       <div className="admin_login_no_user Flex" onClick={() => navigate("/login")}>
         <img src={NOUSER} alt="noUser" />
-        <h2>Please log in to the website first.</h2>
+        <p>Please log in to the website first.</p>
       </div>
     );
   }

@@ -7,6 +7,7 @@ function HostForm() {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [functionIdError, setFunctionIdError] = useState(null);
+  const [amount, setAmount] = useState(1999);
   const [formData, setFormData] = useState({
     functionName: "",
     functionDate: "",
@@ -57,54 +58,110 @@ function HostForm() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
-
+  
     if (!userData) {
       console.error("User data not available");
       return;
     }
-
+  
     const newEvent = { ...formData };
-
-    // Check if the entered function ID already exists
-    axios
-      .get(
+  
+    try {
+      // Check if the function ID is available
+      const checkResponse = await axios.get(
         `http://localhost:3001/events/check-function-id/${newEvent.functionID}`
-      )
-      .then((response) => {
-        // If function ID is available, proceed to add the event
-        axios
-          .post(`http://localhost:3001/users/${userId}/events`, newEvent)
-          .then((response) => {
-            console.log("Event added successfully:", response.data);
-            navigate(`/host/${userId}/${response.data.functionID}`);
-          })
-          .catch((error) => {
-            console.error("Error adding event:", error);
-            const errorMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.error) ||
-              "An error occurred while adding the event. Please try again.";
-            alert(errorMessage);
-          });
-      })
-      .catch((error) => {
-        console.error("Error checking function ID:", error);
-        const errorMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.error) ||
-          "An error occurred while checking the Function ID. Please try again.";
-        alert(errorMessage);
-      });
+      );
+  
+      if (checkResponse.data.message === "Function ID is available.") {
+        // Initiate payment
+        const paymentResponse = await axios.post(
+          `${process.env.REACT_APP_BACKEND_HOST_URL}/api/payment/pay`,
+          { amount },
+          { headers: { "Content-Type": "application/json" } }
+        );
+  
+        const data = paymentResponse.data;
+  
+        const options = {
+          key: process.env.REACT_APP_RAZORPAY_KEY_ID,
+          amount: data.amount,
+          currency: data.currency,
+          name: "shutterOn",
+          description: "Transaction",
+          order_id: data.id,
+          image: "../../assets/logo.png",
+          handler: async function (response) {
+            const verifyResponse = await axios.post(
+              `${process.env.REACT_APP_BACKEND_HOST_URL}/api/payment/verify`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                userId: userId,
+                newEvent: newEvent
+              }
+            );
+  
+            if (verifyResponse.data.message === "Payment Succeeded") {
+              navigate(`/host/${userId}/${formData.functionID}`);
+            } else {
+              alert("Payment verification failed. Please try again.");
+            }
+          },
+          prefill: {
+            name: userData.name,
+            email: userData.email,
+            contact: formData.phoneNumber,
+          },
+          notes: {
+            address: formData.hostingTeam,
+          },
+          theme: {
+            color: "#092635",
+          },
+        };
+  
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+          alert("Payment failed. Please try again.");
+        });
+  
+        rzp.open();
+      } else {
+        console.error("Function ID is not available");
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data.error === "Function ID already exists."
+      ) {
+        alert("Function ID already exists.");
+      } else {
+        console.error("Error during payment process:", error);
+        alert(
+          "An error occurred during the payment process. Please try again."
+        );
+      }
+    }
   };
+  
+
+  // useEffect(() => {
+  //   const checkResponse = axios
+  //     .get(`http://localhost:3001/user/${userId}`)
+  //     .then((response) => {
+  //       console.log(
+  //         response.data.events.filter((item) => item.paymentStatus === true)
+  //       );
+  //     });
+  // }, [userId]);
 
   return (
     <div className="host_form_container Flex">
       <h2>Host a function</h2>
-      <form className="host_form Flex" onSubmit={handleSubmit}>
+      <form className="host_form Flex" onSubmit={handlePayment}>
         <div className="inputs Flex">
           <label htmlFor="functionName">Function Name *</label>
           <input

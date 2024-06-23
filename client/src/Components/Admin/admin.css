@@ -3,10 +3,11 @@
   min-height: 90vh;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-x: scroll;
 }
 
 .admin_header {
-  padding: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--bg);
 }
 
@@ -47,7 +48,6 @@
 
 .admin_table {
   margin-top: 20px;
-  /* overflow-x: auto; */
   justify-content: flex-start !important;
 }
 
@@ -67,7 +67,7 @@
 .admin_table th:nth-child(1) {
   border-radius: 10px 0 0 0;
 }
-.admin_table th:nth-child(7) {
+.admin_table th:nth-child(9) {
   border-radius: 0 10px 0 0;
 }
 
@@ -96,11 +96,49 @@
   text-align: center;
 }
 
-.pagination{
+.admin_table td:nth-child(7) {
+  text-align: center !important;
+}
+
+.admin_controls{
+  gap: 3px;
+}
+
+.freeze {
+  border: none;
+  background-color: lightcoral;
+  color: #9a0000;
+  border-radius: 5px;
+  padding: 5px 8px;
+  min-width: 60px;
+}
+
+.freeze:hover {
+  background-color: #db7575;
+  color: #bf0202;
+}
+
+.unfreeze {
+  border: none;
+  background-color: lightblue;
+  color: blue;
+  border-radius: 5px;
+  padding: 5px 8px;
+  min-width: 60px;
+}
+
+.unfreeze:hover {
+  background-color: #7bbacf;
+  color: #0d00a1;
+}
+
+/* pagination section */
+
+.pagination {
   margin-top: 15px;
 }
 
-.event_show_button{
+.event_show_button {
   border: none;
   background-color: lightgreen;
   color: green;
@@ -109,12 +147,12 @@
   min-width: 90px;
 }
 
-.event_show_button:hover{
+.event_show_button:hover {
   background-color: #8fd68f;
   color: rgb(1, 88, 1);
 }
 
-.no_event{
+.no_event {
   color: #e30000;
 }
 
@@ -197,8 +235,8 @@
   width: 100%;
 }
 
-.event_details p{
- text-align: center;
+.event_details p {
+  text-align: center;
 }
 
 .a_event_details_heading {
@@ -223,7 +261,7 @@
   margin-top: 15px;
   border: 1px solid gray;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-  rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   border-radius: 7px;
   flex-wrap: wrap;
   gap: 5px;
@@ -236,17 +274,12 @@
   width: 150px;
 }
 
-.a_users_event_gallery p{
+.a_users_event_gallery p {
   margin: 10px 0;
 }
 
-
-@media (max-width: 799px) {
-  .a_event_details_heading {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .a_event_details_heading > div:nth-child(2) {
+@media (max-width: 1100px) {
+  .admin {
     align-items: flex-start;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./host.css";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
 import Loader from "../Loader/Loader";
@@ -14,6 +14,7 @@ const Host = () => {
   const [confirmed, setConfirmed] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     setCld(new Cloudinary({ cloud: { cloudName: "dqkb2musv" } }));
@@ -21,19 +22,36 @@ const Host = () => {
 
   const { userId, functionID } = useParams();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
     // Fetch function data and gallery photos
     axios
       .get(`http://localhost:3001/host/${userId}/${functionID}`)
       .then((response) => {
         setFunctionData(response.data);
         setGalleryPhotos(response.data.gallery); // Set gallery photos
+        if (response.data.paymentStatus === false) {
+          navigate("/", { replace: true });
+        }
       })
       .catch((error) => {
         console.error("Error fetching function data:", error);
+        navigate("/", { replace: true });
       });
-  }, [userId, functionID, deleted]);
+
+    // Fetch user data to check if the user is frozen
+    axios
+      .get(`http://localhost:3001/users/${userId}`)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId, functionID, deleted, navigate]);
 
   const handleFileChange = (e) => {
     setSelectedPhoto(e.target.files[0]);
@@ -116,6 +134,8 @@ const Host = () => {
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
+  console.log(user);
+
   return (
     <div className="hosting_page_wrapper">
       <div className="hosting_page_head Flex">
@@ -126,12 +146,23 @@ const Host = () => {
         )}
       </div>
 
+      {/* uploading section  */}
+
       <div className="host">
-        <div className="add_photo_option Flex">
+        <div
+          className={`add_photo_option Flex ${
+            user && user.frozen ? "disabled" : ""
+          }`}
+        >
           <label htmlFor="fileInput" className="custom_file_input">
             Choose a Photo
           </label>
-          <input type="file" onChange={handleFileChange} accept="image/*" />
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
+            disabled={user && user.frozen}
+          />
           {selectedPhoto && (
             <div className="photo_preview Flex">
               <img
@@ -150,7 +181,9 @@ const Host = () => {
           )}
         </div>
 
-        {isLoading && <Loader message={'Please Wait...'}/>}
+        {isLoading && <Loader message={"Please Wait..."} />}
+
+        {/* showing uploaded photos */}
 
         <div className="gallery_photos Flex">
           {galleryPhotos.length > 0 ? (
@@ -163,10 +196,11 @@ const Host = () => {
                   loading="lazy"
                 />
                 <div
-                  className="delete_added_image"
-                  onClick={() => handleDeletePhoto(photo)}
+                  className="delete_added_image Flex"
+                  onClick={() => !user.frozen && handleDeletePhoto(photo)}
                 >
-                  <MdDelete size={20} color="white" />
+                  <MdDelete size={16} color="white" />
+                  <p>Delete</p>
                 </div>
               </div>
             ))
@@ -175,6 +209,8 @@ const Host = () => {
           )}
         </div>
       </div>
+
+      {/* Event details */}
 
       <div className="function_details Flex">
         <div className="hosting_details">

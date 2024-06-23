@@ -21,6 +21,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // window.scrollTo(0, 0);
     const storedLogged = localStorage.getItem("logged");
     const storedExpiration = localStorage.getItem("expiration");
 
@@ -35,7 +36,7 @@ const Admin = () => {
         localStorage.removeItem("expiration");
       }
     }
-  }, []);
+  }, [users]);
 
   useEffect(() => {
     if (logged) {
@@ -96,6 +97,37 @@ const Admin = () => {
     }
   };
 
+  const hasGalleryItems = (events) => {
+    return events.reduce(
+      (count, event) => count + (event.gallery ? event.gallery.length : 0),
+      0
+    );
+  };
+
+  const handleFreezeToggle = (userId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to toggle freeze state for this user?"
+    );
+    if (confirmed) {
+      axios
+        .post(`http://localhost:3001/users/${userId}/toggleFreeze/`)
+        .then((response) => {
+          console.log(response.data);
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.userId === userId
+                ? { ...user, frozen: response.data.frozen }
+                : user
+            )
+          );
+        })
+        .catch((error) => {
+          console.error("Error toggling freeze state:", error);
+        });
+    }
+  };
+
+
   return (
     <>
       {logged ? (
@@ -115,7 +147,9 @@ const Admin = () => {
 
           <div className="admin_table">
             {currentItems.length === 0 ? (
-              <p style={{ marginTop: "100px" }}>Oops! No user found !</p>
+              <p style={{ marginTop: "100px", textAlign: "center" }}>
+                Oops! Something went wrong !
+              </p>
             ) : (
               <>
                 <table>
@@ -127,7 +161,9 @@ const Admin = () => {
                       <th>Phone</th>
                       <th>Password</th>
                       <th>UserID</th>
+                      <th>Uploads</th>
                       <th>Events</th>
+                      <th>Controls</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -139,6 +175,7 @@ const Admin = () => {
                         <td>{user.phone}</td>
                         <td>{user.password}</td>
                         <td>{user.userId}</td>
+                        <td>{hasGalleryItems(user.events)}</td>
                         <td>
                           {user.events.length > 0 ? (
                             <button
@@ -146,13 +183,21 @@ const Admin = () => {
                               onClick={() => handleOpenEvents(user.userId)}
                             >
                               View{" "}
-                              {+user.events.length === 1
+                              {user.events.length === 1
                                 ? user.events.length + " Event "
                                 : user.events.length + " Events "}
                             </button>
                           ) : (
                             <p className="no_event">No events</p>
                           )}
+                        </td>
+                        <td className="admin_controls Flex">
+                          <button
+                            className={`${user.frozen ? "unfreeze" : "freeze"}`}
+                            onClick={() => handleFreezeToggle(user.userId)}
+                          >
+                            {user.frozen ? "Unfreeze" : "Freeze"}
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -177,15 +222,17 @@ const Admin = () => {
                 </div>
               </>
             )}
-            <div className="admin_user_details Flex">
-              <p>
-                Event hosted <strong>{eventHostedUsers.length}</strong> out of{" "}
-                <strong>{users.length}</strong> users
-              </p>
-              <button className="logout" onClick={handleLogoutAdmin}>
-                Logout Admin
-              </button>
-            </div>
+            {currentItems.length > 0 && (
+              <div className="admin_user_details Flex">
+                <p>
+                  Event hosted <strong>{eventHostedUsers.length}</strong> out of{" "}
+                  <strong>{users.length}</strong> users
+                </p>
+                <button className="logout" onClick={handleLogoutAdmin}>
+                  Logout Admin
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ) : (

@@ -1,19 +1,33 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const UserModel = require("./models/users");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
-
+const paymentRoutes = require("../server/payment");
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb://127.0.0.1:27017/shutterOn");
+const dbURI = process.env.MONGO_URI;
+
+console.log(dbURI)
+
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+})
+.then(() => console.log('MongoDB connected'))
+.catch((err) => console.log('MongoDB connection error:', err));
+
 
 const fs = require("fs");
 
 const uploadDir = "./uploads";
+
 
 // Create the uploads directory if it doesn't exist
 if (!fs.existsSync(uploadDir)) {
@@ -27,20 +41,64 @@ cloudinary.config({
   api_secret: "w90RFy3YHM-MuvDEyRObiNVhdic",
 });
 
-
 app.post("/update-gallery", (req, res) => {
   const { userId, functionID, imageUrl } = req.body;
 
-  UserModel.findOneAndUpdate(
-    { userId, "events.functionID": functionID },
-    { $push: { "events.$.gallery": imageUrl } },
-    { new: true, useFindAndModify: false }
-  )
-    .then(() => {
-      res.json({ message: "Gallery updated successfully" });
+  // Find user and event, and check payment status
+  UserModel.findOne({ userId, "events.functionID": functionID })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User or Event not found" });
+      }
+
+      const event = user.events.find(
+        (event) => event.functionID === functionID
+      );
+
+      if (!event) {
+        return res.status(404).json({ error: "Event not found" });
+      }
+
+      if (event.paymentStatus !== true) {
+        return res.status(400).json({ error: "Payment not verified" });
+      }
+
+      // Proceed to update the gallery if paymentStatus is true
+      UserModel.findOneAndUpdate(
+        { userId, "events.functionID": functionID },
+        { $push: { "events.$.gallery": imageUrl } },
+        { new: true, useFindAndModify: false }
+      )
+        .then(() => {
+          res.json({ message: "Gallery updated successfully" });
+        })
+        .catch((error) => {
+          console.error("Error updating gallery in MongoDB:", error);
+          res.status(500).json({ error: "Internal server error" });
+        });
     })
     .catch((error) => {
-      console.error("Error updating gallery in MongoDB:", error);
+      console.error("Error finding user or event:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+});
+
+app.delete("/users/:userId/events/:functionID", (req, res) => {
+  const { userId, functionID } = req.params;
+
+  UserModel.findOneAndUpdate(
+    { userId },
+    { $pull: { events: { functionID: functionID } } },
+    { new: true }
+  )
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User or event not found" });
+      }
+      res.json({ message: "Event deleted successfully" });
+    })
+    .catch((error) => {
+      console.error("Error deleting event:", error);
       res.status(500).json({ error: "Internal server error" });
     });
 });
@@ -55,8 +113,6 @@ const storage = multer.diskStorage({
   },
 });
 
-
-
 const upload = multer({ storage: storage });
 
 // upload photos
@@ -70,13 +126,11 @@ app.post("/upload", upload.single("photo"), (req, res) => {
       console.error("Error uploading photo to Cloudinary:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
-    
+
     // Return Cloudinary URL of the uploaded image
     res.json({ imageUrl: result.secure_url });
   });
 });
-
-
 
 // Delete photo endpoint
 app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
@@ -86,7 +140,7 @@ app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
   const decodedPhotoUrl = decodeURIComponent(photoUrl);
 
   // Extract the public_id from the photo URL for Cloudinary
-  const publicId = decodedPhotoUrl.split('/').pop().split('.')[0];
+  const publicId = decodedPhotoUrl.split("/").pop().split(".")[0];
 
   // Delete image from Cloudinary
   cloudinary.uploader.destroy(publicId, (error, result) => {
@@ -111,7 +165,6 @@ app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
   });
 });
 
-
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -135,8 +188,6 @@ app.post("/login", (req, res) => {
   });
 });
 
-
-
 app.post("/users", (req, res) => {
   const { email } = req.body;
 
@@ -151,8 +202,6 @@ app.post("/users", (req, res) => {
   });
 });
 
-
-
 // for admin page
 
 app.get("/users", (req, res) => {
@@ -166,20 +215,19 @@ app.get("/users", (req, res) => {
     });
 });
 
-
-
 app.post("/users/:userId/events", (req, res) => {
   const userId = req.params.userId;
-  const newEvent = req.body;
+  const newEvent = {
+    ...req.body,
+    paymentStatus: false, // Ensure payment status is initially false
+  };
 
-  // Check if the function ID already exists in the database
   UserModel.findOne({ "events.functionID": newEvent.functionID })
     .then((user) => {
       if (user) {
         return res.status(400).json({ error: "Function ID already exists." });
       }
 
-      // If the function ID does not exist, proceed to add the event
       UserModel.findOneAndUpdate(
         { userId },
         { $push: { events: newEvent } },
@@ -189,7 +237,7 @@ app.post("/users/:userId/events", (req, res) => {
           if (!user) {
             return res.status(404).json({ error: "User not found" });
           }
-          res.json(newEvent); // Return the newly added event with its unique function ID
+          res.json(newEvent);
         })
         .catch((error) => {
           console.error("Error adding event:", error);
@@ -201,8 +249,6 @@ app.post("/users/:userId/events", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
-
-
 
 app.get("/user/:id", (req, res) => {
   const userId = req.params.id;
@@ -220,8 +266,6 @@ app.get("/user/:id", (req, res) => {
     });
 });
 
-
-
 app.get("/hosts/:id", (req, res) => {
   const functionID = req.params.id;
 
@@ -230,15 +274,15 @@ app.get("/hosts/:id", (req, res) => {
       if (!functionData) {
         return res.status(404).json({ error: "Function not found" });
       }
-      res.json(functionData.events.find(event => event.functionID === functionID));
+      res.json(
+        functionData.events.find((event) => event.functionID === functionID)
+      );
     })
     .catch((error) => {
       console.error("Error fetching function data:", error);
       res.status(500).json({ error: "Internal server error" });
     });
 });
-
-
 
 app.get("/events/check-function-id/:functionID", (req, res) => {
   const { functionID } = req.params;
@@ -255,8 +299,6 @@ app.get("/events/check-function-id/:functionID", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
-
-
 
 app.get("/host/:userId/:functionID", (req, res) => {
   const { userId, functionID } = req.params;
@@ -289,7 +331,9 @@ app.get("/get-event/:functionID", (req, res) => {
       if (!user) {
         return res.status(404).json({ error: "Event not found" });
       }
-      const event = user.events.find((event) => event.functionID === functionID);
+      const event = user.events.find(
+        (event) => event.functionID === functionID
+      );
       res.json(event);
     })
     .catch((error) => {
@@ -298,7 +342,43 @@ app.get("/get-event/:functionID", (req, res) => {
     });
 });
 
+app.post('/users/:userId/toggleFreeze', (req, res) => {
+  const { userId } = req.params;
+
+  UserModel.findOne({ userId }) // Use findOne with userId if userId is a unique field
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      user.frozen = !user.frozen;
+
+      return user.save();
+    })
+    .then((updatedUser) => res.json({ frozen: updatedUser.frozen }))
+    .catch((error) => res.status(500).json({ error: 'Error toggling freeze state' }));
+});
+
+// for fetching details of frozen in account
+
+app.get('/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  UserModel.findOne({ userId })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json({ frozen: user.frozen });
+    })
+    .catch(error => res.status(500).json({ error: 'Error fetching user data' }));
+});
+
+
+
+app.use("/api/payment", paymentRoutes);
 
 app.listen(3001, () => {
   console.log("server is running");
 });
+
+

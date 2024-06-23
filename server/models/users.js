@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const eventSchema = new mongoose.Schema({
+const EventSchema = new mongoose.Schema({
   functionName: String,
   functionDate: Date,
   place: String,
@@ -8,18 +8,26 @@ const eventSchema = new mongoose.Schema({
   functionID: String,
   hostingTeam: String,
   phoneNumber: String,
-  gallery: [String], 
+  gallery: [String],
+  paymentStatus: { type: Boolean, default: false },
+  payment: {
+    razorpay_order_id: String,
+    razorpay_payment_id: String,
+    razorpay_signature: String,
+    date: Date,
+  }
 });
 
-const userSchema = new mongoose.Schema({
-  userId:String,
+const UserSchema = new mongoose.Schema({
+  userId: String,
   name: String,
-  phone: Number,
   email: String,
+  phone: String,
   password: String,
-  events: [eventSchema],
+  frozen: { type: Boolean, default: false },
+  events: [EventSchema],
 });
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", UserSchema);
 
 module.exports = UserModel;

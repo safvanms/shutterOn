@@ -38,7 +38,7 @@ const AdminEventPage = () => {
           setIsLoading(false);
         });
     }
-  }, [deleted, showData,navigate]);
+  }, [deleted, showData, navigate]);
 
   const handleEventSelect = (e) => {
     const selectedEventId = e.target.value;
@@ -135,6 +135,8 @@ const AdminEventPage = () => {
                     </div>
                   </div>
                 ))
+              ) : eventDetails.paymentStatus !== true ? (
+                <h2  className="error">Payment not completed or Failed</h2>
               ) : (
                 <p>No photos available for this event.</p>
               )}

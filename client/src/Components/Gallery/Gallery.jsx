@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import NoIMG from "../../assets/empty.png";
 import { BsDownload } from "react-icons/bs";
+import Loader from '../Loader/Loader'
 
 const Gallery = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -14,6 +15,7 @@ const Gallery = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchGalleryImages = async () => {
       try {
         setLoading(true);
@@ -62,22 +64,24 @@ const Gallery = () => {
     <>
       <div className="gallery Flex">
         <div className="gallery_container">
-          <div className="gallery_head Flex">
-            <h2>Gallery</h2>
-            <div className="g_function_details">
-              {data && (
-                <>
-                  <p>{data.functionName}</p>
-                  <p>Date : {Day(data.functionDate)}</p>
-                  <p>Event ID : {data.functionID}</p>
-                  <p>Hosting : {data.hostingTeam}</p>
-                </>
-              )}
+          {!wrongId && (
+            <div className="gallery_head Flex">
+              <h2>Gallery</h2>
+              <div className="g_function_details">
+                {data && (
+                  <>
+                    <p>{data.functionName}</p>
+                    <p>Date : {Day(data.functionDate)}</p>
+                    <p>Event ID : {data.functionID}</p>
+                    <p>Hosting : {data.hostingTeam}</p>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="photos_wrapper Flex">
             {loading ? (
-              <p>Loading...</p>
+              <Loader message={"Please wait."}/>
             ) : galleryImages.length > 0 ? (
               galleryImages.map((image, index) => (
                 <div key={index} className="function_image">
@@ -88,20 +92,24 @@ const Gallery = () => {
                     loading="lazy"
                   />
                   <div
-                    className="download_added_image"
+                    className="download_added_image Flex"
                     onClick={() => handleDownload(image)}
                   >
-                    <BsDownload size={20} color="white" />
+                    <BsDownload size={15} color="white" />
+                    <p>Download</p>
                   </div>
                 </div>
               ))
             ) : wrongId ? (
-              <h2>This is a wrong functionID</h2>
+              <div>
+                <h2>Sorry. This is a wrong ID !</h2>
+                <p className="re_enter" onClick={()=>navigate('/')} >Re enter id ?</p>
+              </div>
             ) : (
               <div className="wrong_id Flex">
                 <img src={NoIMG} alt="empty" style={{ width: "180px" }} />
                 <p onClick={() => navigate("/", { replace: true })}>
-                  Sorry. No photos found !
+                  Sorry. No photos uploaded yet !
                 </p>{" "}
               </div>
             )}
