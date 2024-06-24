@@ -4,6 +4,7 @@ import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import Account from "../Account/Account";
+import USER from '../../assets/user.png'
 
 const Header = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Header = () => {
   if (user && user.name) {
     const nameParts = user.name.split(" ");
     firstName = nameParts[0];
+    console.log(firstName)
   }
 
 
@@ -41,9 +43,9 @@ const Header = () => {
       <>
         {user ? (
           <>
-            <h3 className="login_btn" onClick={handleOpenAccount}>
-              {firstName}
-            </h3>
+            <div className="login_btn" onClick={handleOpenAccount}>
+              <img src={USER} alt="user" />
+            </div>
             {isModalOpen && (
               <Account
                 isOpen={isModalOpen}

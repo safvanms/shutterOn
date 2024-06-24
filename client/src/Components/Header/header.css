@@ -26,12 +26,13 @@
   width: 40px;
 }
 
-.login_btn {
+.login_btn img{
+  width: 30px;
   cursor: pointer;
   text-transform: capitalize;
 }
 
-.login_btn:hover {
+.login_btn img:hover {
   color: #2c3d59;
 }
 
