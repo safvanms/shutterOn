@@ -83,7 +83,7 @@ const Signin = () => {
     const userId = "_SO" + Date.now();
 
     try {
-      const response = await axios.post("http://localhost:3001/users", {
+      const response = await axios.post("http://localhost:3001/users/", {
         userId,
         name,
         phone,
