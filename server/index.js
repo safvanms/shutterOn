@@ -47,6 +47,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+console.log(cloud_name,api_key,api_secret)
 // Add a basic route to test if the server is running
 app.get('/', (req, res) => {
   res.send('Backend is running');
@@ -81,6 +82,26 @@ app.post("/upload", upload.single("photo"), (req, res) => {
     res.json({ imageUrl: result.secure_url });
   });
 });
+
+
+app.post("/update-gallery", (req, res) => {
+  const { userId, functionID, imageUrl } = req.body;
+
+  UserModel.findOneAndUpdate(
+    { userId, "events.functionID": functionID },
+    { $push: { "events.$.gallery": imageUrl } },
+    { new: true, useFindAndModify: false }
+  )
+    .then(() => {
+      res.json({ message: "Gallery updated successfully" });
+    })
+    .catch((error) => {
+      console.error("Error updating gallery:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+});
+
+
 
 // Delete photo endpoint
 app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {

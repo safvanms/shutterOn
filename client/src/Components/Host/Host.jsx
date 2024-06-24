@@ -68,7 +68,7 @@ const Host = () => {
 
       // Upload photo to Cloudinary
       axios
-        .post(`/upload`, formData, {
+        .post('/upload/', formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -136,7 +136,6 @@ const Host = () => {
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  console.log(user);
 
   return (
     <div className="hosting_page_wrapper">

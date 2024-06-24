@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./hostform.css";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 function HostForm() {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [functionIdError, setFunctionIdError] = useState(null);
   const [formData, setFormData] = useState({
     functionName: "",
@@ -17,8 +19,8 @@ function HostForm() {
     phoneNumber: "",
     gallery: [],
   });
-  const amount = 1999
-  
+  const amount = 1999;
+
   useEffect(() => {
     axios
       .get(`/user/${userId}`)
@@ -60,20 +62,22 @@ function HostForm() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-  
+
+    setLoading(true);
+
     if (!userData) {
       console.error("User data not available");
       return;
     }
-  
+
     const newEvent = { ...formData };
-  
+
     try {
       // Check if the function ID is available
       const checkResponse = await axios.get(
         `/events/check-function-id/${newEvent.functionID}`
       );
-  
+
       if (checkResponse.data.message === "Function ID is available.") {
         // Initiate payment
         const paymentResponse = await axios.post(
@@ -81,9 +85,9 @@ function HostForm() {
           { amount },
           { headers: { "Content-Type": "application/json" } }
         );
-  
+
         const data = paymentResponse.data;
-  
+
         const options = {
           key: process.env.REACT_APP_RAZORPAY_KEY_ID,
           amount: data.amount,
@@ -100,10 +104,10 @@ function HostForm() {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
                 userId: userId,
-                newEvent: newEvent
+                newEvent: newEvent,
               }
             );
-  
+
             if (verifyResponse.data.message === "Payment Succeeded") {
               navigate(`/host/${userId}/${formData.functionID}`);
             } else {
@@ -122,12 +126,12 @@ function HostForm() {
             color: "#092635",
           },
         };
-  
+
         const rzp = new window.Razorpay(options);
-        rzp.on('payment.failed', function (response) {
+        rzp.on("payment.failed", function (response) {
           alert("Payment failed. Please try again.");
         });
-  
+        setLoading(false);
         rzp.open();
       } else {
         console.error("Function ID is not available");
@@ -147,9 +151,9 @@ function HostForm() {
     }
   };
 
-
   return (
     <div className="host_form_container Flex">
+      {loading && <Loader message={"please wait for a moment"}/>}
       <h2>Host a function</h2>
       <form className="host_form Flex" onSubmit={handlePayment}>
         <div className="inputs Flex">

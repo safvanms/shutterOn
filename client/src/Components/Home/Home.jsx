@@ -78,7 +78,7 @@ const Home = () => {
             // onKeyDown={handleKeyDown}
           />
           {!functionIdError && functionId && (
-            <button type="button" className="function_btn">
+            <button type="submit" className="function_btn">
               View
             </button>
           )}
