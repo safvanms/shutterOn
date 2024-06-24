@@ -7,7 +7,6 @@ function HostForm() {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [functionIdError, setFunctionIdError] = useState(null);
-  const [amount, setAmount] = useState(1999);
   const [formData, setFormData] = useState({
     functionName: "",
     functionDate: "",
@@ -18,7 +17,8 @@ function HostForm() {
     phoneNumber: "",
     gallery: [],
   });
-
+  const amount = 1999
+  
   useEffect(() => {
     axios
       .get(`http://localhost:3001/user/${userId}`)

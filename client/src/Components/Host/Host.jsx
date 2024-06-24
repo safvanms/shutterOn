@@ -16,6 +16,8 @@ const Host = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
+  console.log(cld)
+
   useEffect(() => {
     setCld(new Cloudinary({ cloud: { cloudName: "dqkb2musv" } }));
   }, []);
