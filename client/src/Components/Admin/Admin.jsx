@@ -3,6 +3,7 @@ import "./admin.css";
 import AdminLogin from "./AdminLogin";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
+import Loader from '../Loader/Loader'
 
 const userName = "shutterOn@1";
 const password = "shutterOn@1";
@@ -148,9 +149,7 @@ const Admin = () => {
 
           <div className="admin_table">
             {currentItems.length === 0 ? (
-              <p style={{ marginTop: "100px", textAlign: "center" }}>
-                Oops! Something went wrong !
-              </p>
+              <Loader message={'please wait...'}/>
             ) : (
               <>
                 <table>
