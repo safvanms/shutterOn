@@ -47,7 +47,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-console.log(cloud_name,api_key,api_secret)
 // Add a basic route to test if the server is running
 app.get('/', (req, res) => {
   res.send('Backend is running');
@@ -70,6 +69,8 @@ const upload = multer({ storage: storage });
 // upload photos
 app.post("/upload", upload.single("photo"), (req, res) => {
   const file = req.file;
+
+  console.log(file)
 
   // Upload image to Cloudinary
   cloudinary.uploader.upload(file.path, (error, result) => {
