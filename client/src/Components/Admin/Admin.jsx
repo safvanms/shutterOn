@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./admin.css";
 import AdminLogin from "./AdminLogin";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 import { useNavigate } from "react-router-dom";
 
 const userName = "shutterOn@1";

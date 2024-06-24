@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./gallery.css";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 import NoIMG from "../../assets/empty.png";
 import { BsDownload } from "react-icons/bs";
 import Loader from '../Loader/Loader'

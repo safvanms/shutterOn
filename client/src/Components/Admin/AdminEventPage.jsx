@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 
 const AdminEventPage = () => {
   const [showData, setShowData] = useState(null);

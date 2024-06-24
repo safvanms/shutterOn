@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./host.css";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 import { useNavigate, useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";

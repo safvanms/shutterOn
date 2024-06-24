@@ -4,7 +4,7 @@ import { BiShowAlt, BiHide } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 
 const Signin = () => {
   const [show, setShow] = useState(false);

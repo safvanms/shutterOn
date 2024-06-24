@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.png";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
-import axios from "./axiosInstance"; 
+import axios from "../../axiosInstance"; 
 
 
 const Login = () => {
