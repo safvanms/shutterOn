@@ -165,8 +165,8 @@
   }
 }
 
-@media (max-width: 549px) {
+@media (max-width: 449px) {
   .photo {
-    width: 100%;
+    width: 100% !important;
   }
 }
