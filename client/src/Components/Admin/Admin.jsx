@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./admin.css";
 import AdminLogin from "./AdminLogin";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 const userName = "shutterOn@1";
@@ -104,15 +104,19 @@ const Admin = () => {
     );
   };
 
-  const handleFreezeToggle = (userId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to toggle freeze state for this user?"
-    );
+  const handleFreezeToggle = (userId, currentFrozenState) => {
+    console.log(userId, currentFrozenState);
+
+    const confirmationMessage = currentFrozenState
+      ? "Are you sure you want to unfreeze this user?"
+      : "Are you sure you want to freeze this user?";
+
+    const confirmed = window.confirm(confirmationMessage);
     if (confirmed) {
       axios
-        .post(`http://localhost:3001/users/${userId}/toggleFreeze/`)
+        .post(`/users/${userId}/toggleFreeze`)
         .then((response) => {
-          console.log(response.data);
+          console.log(`User ${userId} freeze state: ${response.data.frozen}`);
           setUsers((prevUsers) =>
             prevUsers.map((user) =>
               user.userId === userId
@@ -126,7 +130,6 @@ const Admin = () => {
         });
     }
   };
-
 
   return (
     <>
@@ -191,10 +194,12 @@ const Admin = () => {
                             <p className="no_event">No events</p>
                           )}
                         </td>
-                        <td className="admin_controls Flex">
+                        <td>
                           <button
                             className={`${user.frozen ? "unfreeze" : "freeze"}`}
-                            onClick={() => handleFreezeToggle(user.userId)}
+                            onClick={() =>
+                              handleFreezeToggle(user.userId, user.frozen)
+                            }
                           >
                             {user.frozen ? "Unfreeze" : "Freeze"}
                           </button>

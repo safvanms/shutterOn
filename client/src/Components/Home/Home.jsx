@@ -29,7 +29,6 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-
   const handleChange = (e) => {
     const { value } = e.target;
 
@@ -37,7 +36,7 @@ const Home = () => {
     const sanitizedValue = value.toLowerCase().replace(/[\s']/g, "");
 
     if (sanitizedValue !== value) {
-      setFunctionIdError("Not accept Uppercase letter,space and apostrophe");
+      setFunctionIdError("Not accepts Uppercase letter,space or apostrophe");
     } else {
       setFunctionIdError(null);
     }
@@ -45,8 +44,14 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('object')
     navigate(`/gallery/${functionId}`);
+  };
+
+  
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === "return") {
+      e.preventDefault();
+    }
   };
 
   return (
@@ -75,9 +80,9 @@ const Home = () => {
             onChange={handleChange}
             name="function_id"
             style={{ outline: functionIdError && "2px solid red" }}
-            // onKeyDown={handleKeyDown}
+            onKeyDown={handleKeyDown}
           />
-          {!functionIdError && functionId && (
+          {!functionIdError && functionId !== " " && functionId && (
             <button type="submit" className="function_btn">
               View
             </button>

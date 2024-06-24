@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 const dbURI = process.env.MONGO_URI;
-const port = process.env.PORT || 3001; 
+const port = process.env.PORT || 3001;
 
 // Ensure environment variables are set
 if (!dbURI) {
@@ -22,14 +22,15 @@ if (!dbURI) {
 
 console.log(`MongoDB URI: ${dbURI}`);
 
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
-  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("MongoDB connection error:", err));
 
 const fs = require("fs");
 
@@ -48,8 +49,8 @@ cloudinary.config({
 });
 
 // Add a basic route to test if the server is running
-app.get('/', (req, res) => {
-  res.send('Backend is running');
+app.get("/", (req, res) => {
+  res.send("Backend is running");
 });
 
 // Your existing routes...
@@ -70,7 +71,7 @@ const upload = multer({ storage: storage });
 app.post("/upload", upload.single("photo"), (req, res) => {
   const file = req.file;
 
-  console.log(file)
+  console.log(file);
 
   // Upload image to Cloudinary
   cloudinary.uploader.upload(file.path, (error, result) => {
@@ -83,7 +84,6 @@ app.post("/upload", upload.single("photo"), (req, res) => {
     res.json({ imageUrl: result.secure_url });
   });
 });
-
 
 app.post("/update-gallery", (req, res) => {
   const { userId, functionID, imageUrl } = req.body;
@@ -101,8 +101,6 @@ app.post("/update-gallery", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
-
-
 
 // Delete photo endpoint
 app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
@@ -173,7 +171,6 @@ app.post("/users", (req, res) => {
     }
   });
 });
-
 
 // for admin page
 
@@ -315,38 +312,44 @@ app.get("/get-event/:functionID", (req, res) => {
     });
 });
 
-app.post('/users/:userId/toggleFreeze', (req, res) => {
+app.post("/users/:userId/toggleFreeze", (req, res) => {
   const { userId } = req.params;
 
   UserModel.findOne({ userId }) // Use findOne with userId if userId is a unique field
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
 
       user.frozen = !user.frozen;
 
-      return user.save();
+      return user.save(); // Save the user model with the new frozen state
     })
-    .then((updatedUser) => res.json({ frozen: updatedUser.frozen }))
-    .catch((error) => res.status(500).json({ error: 'Error toggling freeze state' }));
+    .then((updatedUser) => {
+      console.log(`User ${userId} freeze state: ${updatedUser.frozen}`);
+      res.json({ frozen: updatedUser.frozen });
+    })
+    .catch((error) => {
+      console.error("Error toggling freeze state:", error);
+      res.status(500).json({ error: "Error toggling freeze state" });
+    });
 });
 
 // for fetching details of frozen in account
 
-app.get('/users/:userId', (req, res) => {
+app.get("/users/:userId", (req, res) => {
   const { userId } = req.params;
   UserModel.findOne({ userId })
-    .then(user => {
+    .then((user) => {
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
       res.json({ frozen: user.frozen });
     })
-    .catch(error => res.status(500).json({ error: 'Error fetching user data' }));
+    .catch((error) =>
+      res.status(500).json({ error: "Error fetching user data" })
+    );
 });
-
-
 
 app.use("/api/payment", paymentRoutes);
 

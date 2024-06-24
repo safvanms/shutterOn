@@ -4,14 +4,14 @@ import Logo from "../../assets/logo.png";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
-import axios from "../../axiosInstance"; 
-
+import axios from "../../axiosInstance";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState("");
+  const [verify, setVerify] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useUser();
@@ -28,14 +28,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setVerify(true);
     try {
       const response = await axios.post("/login", {
         email,
         password,
       });
-
-      console.log("Server Response:", response.data);
 
       if (response.data.success) {
         const userData = {
@@ -56,13 +54,17 @@ const Login = () => {
         // Handle error response from server
         if (error.response.status === 401) {
           setErrors("The Password is incorrect");
+          setVerify(false);
         } else if (error.response.status === 404) {
           setErrors("Oops! No Account exists with this email");
+          setVerify(false);
         } else {
           setErrors("An error occurred. Please try again.");
+          setVerify(false);
         }
       } else {
         setErrors("An error occurred. Please try again.");
+        setVerify(false);
       }
     }
   };
@@ -100,7 +102,7 @@ const Login = () => {
 
           {errors ? <span className="error">{errors}</span> : ""}
 
-          <button type="submit">Submit</button>
+          <button type="submit">{verify ? "Verifying" : "Submit"}</button>
           <p className="sign_btn">
             Don't have an Account ?{" "}
             <span onClick={() => navigate("/signin")}> Sign In</span>

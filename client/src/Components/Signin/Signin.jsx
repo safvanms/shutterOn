@@ -4,7 +4,7 @@ import { BiShowAlt, BiHide } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 
 const Signin = () => {
   const [show, setShow] = useState(false);
@@ -14,6 +14,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [verify, setVerify] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useUser();
@@ -48,32 +49,37 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setVerify(true);
     let formErrors = {};
 
     // Validate email
     if (!validateEmail(email)) {
       formErrors.email = "Invalid email address";
+      setVerify(false);
     }
 
     // Validate phone number
     if (!validatePhone(phone)) {
       formErrors.phone = "Phone number must be 10 digits";
+      setVerify(false);
     }
 
     // Validate password
     if (!validatePassword(password)) {
       formErrors.password =
         "At least one Uppercase letter ,one Number , one special Character (@,#,$,&) and Minimum of 8 character long";
+      setVerify(false);
     }
 
     // Validate passwords match
     if (password !== confirmPassword) {
       formErrors.confirmPassword = "Passwords do not match";
+      setVerify(false);
     }
 
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
+      setVerify(false);
       return;
     }
 
@@ -104,8 +110,10 @@ const Signin = () => {
       console.error("Signin Error:", error);
       if (error.response && error.response.data.error) {
         setErrors({ server: error.response.data.error });
+        setVerify(false);
       } else {
         setErrors({ server: "An error occurred. Please try again." });
+        setVerify(false);
       }
     }
   };
@@ -176,7 +184,7 @@ const Signin = () => {
             <span className="error">{errors.confirmPassword}</span>
           )}
           {errors.server && <span className="error">{errors.server}</span>}
-          <button type="submit">Submit</button>
+          <button type="submit">{verify ? "Verifying" : "Submit"}</button>
 
           <p className="sign_btn">
             Already have an Account ?{" "}

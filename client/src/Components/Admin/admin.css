@@ -100,9 +100,9 @@
   text-align: center !important;
 }
 
-.admin_controls{
+/* .admin_controls{
   gap: 3px;
-}
+} */
 
 .freeze {
   border: none;
