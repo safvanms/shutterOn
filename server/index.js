@@ -7,12 +7,20 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const paymentRoutes = require("../server/payment");
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 
 const dbURI = process.env.MONGO_URI;
+const port = process.env.PORT || 3001; 
 
-console.log(dbURI)
+// Ensure environment variables are set
+if (!dbURI) {
+  console.error("Missing MONGO_URI environment variable");
+  process.exit(1);
+}
+
+console.log(`MongoDB URI: ${dbURI}`);
 
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
@@ -20,14 +28,12 @@ mongoose.connect(dbURI, {
   serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
   socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
 })
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.log('MongoDB connection error:', err));
-
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.log('MongoDB connection error:', err));
 
 const fs = require("fs");
 
 const uploadDir = "./uploads";
-
 
 // Create the uploads directory if it doesn't exist
 if (!fs.existsSync(uploadDir)) {
@@ -36,72 +42,17 @@ if (!fs.existsSync(uploadDir)) {
 
 // Configuration
 cloudinary.config({
-  cloud_name: "dqkb2musv",
-  api_key: "672357665626387",
-  api_secret: "w90RFy3YHM-MuvDEyRObiNVhdic",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.post("/update-gallery", (req, res) => {
-  const { userId, functionID, imageUrl } = req.body;
-
-  // Find user and event, and check payment status
-  UserModel.findOne({ userId, "events.functionID": functionID })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ error: "User or Event not found" });
-      }
-
-      const event = user.events.find(
-        (event) => event.functionID === functionID
-      );
-
-      if (!event) {
-        return res.status(404).json({ error: "Event not found" });
-      }
-
-      if (event.paymentStatus !== true) {
-        return res.status(400).json({ error: "Payment not verified" });
-      }
-
-      // Proceed to update the gallery if paymentStatus is true
-      UserModel.findOneAndUpdate(
-        { userId, "events.functionID": functionID },
-        { $push: { "events.$.gallery": imageUrl } },
-        { new: true, useFindAndModify: false }
-      )
-        .then(() => {
-          res.json({ message: "Gallery updated successfully" });
-        })
-        .catch((error) => {
-          console.error("Error updating gallery in MongoDB:", error);
-          res.status(500).json({ error: "Internal server error" });
-        });
-    })
-    .catch((error) => {
-      console.error("Error finding user or event:", error);
-      res.status(500).json({ error: "Internal server error" });
-    });
+// Add a basic route to test if the server is running
+app.get('/', (req, res) => {
+  res.send('Backend is running');
 });
 
-app.delete("/users/:userId/events/:functionID", (req, res) => {
-  const { userId, functionID } = req.params;
-
-  UserModel.findOneAndUpdate(
-    { userId },
-    { $pull: { events: { functionID: functionID } } },
-    { new: true }
-  )
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ error: "User or event not found" });
-      }
-      res.json({ message: "Event deleted successfully" });
-    })
-    .catch((error) => {
-      console.error("Error deleting event:", error);
-      res.status(500).json({ error: "Internal server error" });
-    });
-});
+// Your existing routes...
 
 // Multer configuration for file upload
 const storage = multer.diskStorage({
@@ -116,7 +67,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // upload photos
-
 app.post("/upload", upload.single("photo"), (req, res) => {
   const file = req.file;
 
@@ -377,8 +327,6 @@ app.get('/users/:userId', (req, res) => {
 
 app.use("/api/payment", paymentRoutes);
 
-app.listen(3001, () => {
-  console.log("server is running");
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
-
-
