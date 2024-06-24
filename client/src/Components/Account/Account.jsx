@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./account.css";
 import { useNavigate } from "react-router-dom";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import Loader from "../Loader/Loader";
-
 
 const Account = ({ isOpen, closeModal, logout, userId }) => {
   const [userData, setUserData] = useState(null);
@@ -14,18 +13,14 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await axios.get(
-          `/user/${userId}`
-        );
+        const userResponse = await axios.get(`/user/${userId}`);
         setUserData(userResponse.data);
         setEvents(userResponse.data.events);
 
         // fetching froze status
 
-        const userDetailResponse = await axios.get(
-          `/users/${userId}`
-        );
-        console.log(userDetailResponse)
+        const userDetailResponse = await axios.get(`/users/${userId}`);
+        console.log(userDetailResponse);
         setUser(userDetailResponse.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -105,7 +100,11 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
                 </button>
               )}
 
-              {user.frozen && <p>Your account has been frozen, contact us !</p>}
+              {user.frozen && (
+                <p className="frozen_message">
+                 Sorry , Your account has been frozen, contact us !
+                </p>
+              )}
 
               <button className="logout" onClick={handleLogout}>
                 Logout

@@ -119,6 +119,12 @@
   background-color: black;
 }
 
+.frozen_message{
+  font-size: 10px;
+  color: red;
+  font-weight: 800;
+}
+
 @media (max-width: 799px) {
   .modal-content {
     width: 90%;

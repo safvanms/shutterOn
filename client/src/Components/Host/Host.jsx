@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./host.css";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
@@ -16,7 +16,7 @@ const Host = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  console.log(cld)
+  console.log(cld);
 
   useEffect(() => {
     setCld(new Cloudinary({ cloud: { cloudName: "dqkb2musv" } }));
@@ -68,7 +68,7 @@ const Host = () => {
 
       // Upload photo to Cloudinary
       axios
-        .post('/upload/', formData, {
+        .post("/upload/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -98,7 +98,7 @@ const Host = () => {
         .catch((error) => {
           console.error("Error uploading photo to Cloudinary:", error);
           setIsLoading(false);
-          alert('upload less sized images than 10MB ')
+          alert("upload less sized images than 10MB ");
         });
     }
   };
@@ -138,7 +138,6 @@ const Host = () => {
     };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
-
 
   return (
     <div className="hosting_page_wrapper">
@@ -199,17 +198,27 @@ const Host = () => {
                   alt={`Gallery ${index}`}
                   loading="lazy"
                 />
-                <div
-                  className="delete_added_image Flex"
-                  onClick={() => !user.frozen && handleDeletePhoto(photo)}
-                >
-                  <MdDelete size={16} color="white" />
-                  <p>Delete</p>
-                </div>
+                {!user?.frozen && (
+                  <div
+                    className="delete_added_image Flex"
+                    onClick={() => !user.frozen && handleDeletePhoto(photo)}
+                  >
+                    <MdDelete size={16} color="white" />
+                    <p>Delete</p>
+                  </div>
+                )}
               </div>
             ))
           ) : (
             <p>Add photos . </p>
+          )}
+          {user?.frozen && (
+            <p
+              style={{ textAlign: "center", fontSize: "12px", width: "250px" }}
+            >
+              You cant add / delete your galley at the moment , because you're
+              frozen .
+            </p>
           )}
         </div>
       </div>
