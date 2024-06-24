@@ -1,0 +1,40 @@
+.about {
+  min-height: 90vh;
+  flex-direction: column;
+}
+
+.about img {
+  width: 250px;
+  margin: 10px 0;
+}
+
+.about h1 {
+  margin-top: 20px;
+  font-size: 26px;
+  background: linear-gradient(to right, #2c3d59, #66e074);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.about_note {
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+  padding: 0 22px;
+}
+
+.about_note p {
+  max-width: 550px;
+  text-align: justify;
+}
+
+.other_details{
+    margin: 15px 0;
+    min-width: 300px;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.other_details p:hover{
+   color: gray;
+}

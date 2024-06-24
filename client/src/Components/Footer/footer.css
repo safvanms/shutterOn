@@ -5,4 +5,23 @@
     font-size: 12px;
     background-color: var(--primary);
     color: var(--bg);
+    /* height: 35px; */
+}
+
+.footer>div{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.footer>div p:hover{
+    color: gray;
+}
+
+@media (max-width:449px){
+    .copyright{
+        font-size: 10px;
+    }
 }

@@ -11,6 +11,8 @@ import HostForm from "./Components/HostForm/HostForm";
 import Host from "./Components/Host/Host";
 import Admin from "./Components/Admin/Admin";
 import AdminEventPage from "./Components/Admin/AdminEventPage";
+import Contact from "./Components/Contact/Contact";
+import About from "./Components/About/About";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ const MainLayout = () => {
           <Route path="/host/:userId/:functionID" element={<Host />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/:userId" element={<AdminEventPage />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </HeaderFooterWrapper>
     </div>

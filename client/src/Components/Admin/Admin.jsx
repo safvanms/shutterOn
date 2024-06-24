@@ -105,8 +105,6 @@ const Admin = () => {
   };
 
   const handleFreezeToggle = (userId, currentFrozenState) => {
-    console.log(userId, currentFrozenState);
-
     const confirmationMessage = currentFrozenState
       ? "Are you sure you want to unfreeze this user?"
       : "Are you sure you want to freeze this user?";
@@ -116,7 +114,7 @@ const Admin = () => {
       axios
         .post(`/users/${userId}/toggleFreeze`)
         .then((response) => {
-          console.log(`User ${userId} freeze state: ${response.data.frozen}`);
+          // console.log(`User ${userId} freeze state: ${response.data.frozen}`);
           setUsers((prevUsers) =>
             prevUsers.map((user) =>
               user.userId === userId

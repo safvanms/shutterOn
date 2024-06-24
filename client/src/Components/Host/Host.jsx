@@ -92,10 +92,13 @@ const Host = () => {
             })
             .catch((error) => {
               console.error("Error updating gallery:", error);
+              setIsLoading(false);
             });
         })
         .catch((error) => {
           console.error("Error uploading photo to Cloudinary:", error);
+          setIsLoading(false);
+          alert('upload less sized images than 10MB ')
         });
     }
   };
