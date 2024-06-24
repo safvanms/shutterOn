@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./gallery.css";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "./axiosInstance"; 
 import NoIMG from "../../assets/empty.png";
 import { BsDownload } from "react-icons/bs";
 import Loader from '../Loader/Loader'
@@ -19,7 +19,7 @@ const Gallery = () => {
     const fetchGalleryImages = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3001/hosts/${id}`);
+        const response = await axios.get(`/hosts/${id}`);
         const { gallery } = response.data;
         setData(response.data);
         setGalleryImages(gallery);

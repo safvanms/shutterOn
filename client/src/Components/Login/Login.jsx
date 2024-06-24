@@ -3,8 +3,9 @@ import "./login.css";
 import Logo from "../../assets/logo.png";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useUser } from "../../auth";
+import axios from "./axiosInstance"; 
+
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -29,7 +30,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("/login", {
         email,
         password,
       });

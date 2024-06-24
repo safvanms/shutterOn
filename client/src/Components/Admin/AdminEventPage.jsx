@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import axios from "./axiosInstance"; 
 
 const AdminEventPage = () => {
   const [showData, setShowData] = useState(null);
@@ -28,7 +28,7 @@ const AdminEventPage = () => {
     if (showData) {
       setIsLoading(true);
       axios
-        .get(`http://localhost:3001/hosts/${showData.functionID}`)
+        .get(`/hosts/${showData.functionID}`)
         .then((response) => {
           setEventDetails(response.data);
           setIsLoading(false);
@@ -61,7 +61,7 @@ const AdminEventPage = () => {
       setIsLoading(true);
       axios
         .delete(
-          `http://localhost:3001/delete-photo/${userId}/${
+          `/delete-photo/${userId}/${
             showData.functionID
           }/${encodeURIComponent(photoUrl)}`
         )

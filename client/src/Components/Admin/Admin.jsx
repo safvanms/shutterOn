@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./admin.css";
 import AdminLogin from "./AdminLogin";
-import axios from "axios";
+import axios from "./axiosInstance"; 
 import { useNavigate } from "react-router-dom";
 
 const userName = "shutterOn@1";
@@ -41,7 +41,7 @@ const Admin = () => {
   useEffect(() => {
     if (logged) {
       axios
-        .get("http://localhost:3001/users")
+        .get("/users")
         .then((response) => setUsers(response.data))
         .catch((error) => console.error("Error fetching users:", error));
     }

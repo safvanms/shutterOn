@@ -3,8 +3,8 @@ import "./signin.css";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useUser } from "../../auth";
+import axios from "./axiosInstance"; 
 
 const Signin = () => {
   const [show, setShow] = useState(false);
@@ -83,7 +83,7 @@ const Signin = () => {
     const userId = "_SO" + Date.now();
 
     try {
-      const response = await axios.post("http://localhost:3001/users/", {
+      const response = await axios.post("/users/", {
         userId,
         name,
         phone,

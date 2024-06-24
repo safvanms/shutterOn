@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./hostform.css";
-import axios from "axios";
+import axios from "./axiosInstance"; 
 import { useNavigate, useParams } from "react-router-dom";
 
 function HostForm() {
@@ -21,7 +21,7 @@ function HostForm() {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${userId}`)
+      .get(`/user/${userId}`)
       .then((response) => {
         setUserData(response.data);
       })
@@ -71,7 +71,7 @@ function HostForm() {
     try {
       // Check if the function ID is available
       const checkResponse = await axios.get(
-        `http://localhost:3001/events/check-function-id/${newEvent.functionID}`
+        `/events/check-function-id/${newEvent.functionID}`
       );
   
       if (checkResponse.data.message === "Function ID is available.") {
@@ -146,17 +146,7 @@ function HostForm() {
       }
     }
   };
-  
 
-  // useEffect(() => {
-  //   const checkResponse = axios
-  //     .get(`http://localhost:3001/user/${userId}`)
-  //     .then((response) => {
-  //       console.log(
-  //         response.data.events.filter((item) => item.paymentStatus === true)
-  //       );
-  //     });
-  // }, [userId]);
 
   return (
     <div className="host_form_container Flex">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./account.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "./axiosInstance"; 
 import Loader from "../Loader/Loader";
+
 
 const Account = ({ isOpen, closeModal, logout, userId }) => {
   const [userData, setUserData] = useState(null);
@@ -14,7 +15,7 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
     const fetchData = async () => {
       try {
         const userResponse = await axios.get(
-          `http://localhost:3001/user/${userId}`
+          `/user/${userId}`
         );
         setUserData(userResponse.data);
         setEvents(userResponse.data.events);
@@ -22,7 +23,7 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
         // fetching froze status
 
         const userDetailResponse = await axios.get(
-          `http://localhost:3001/users/${userId}`
+          `/users/${userId}`
         );
         console.log(userDetailResponse)
         setUser(userDetailResponse.data);

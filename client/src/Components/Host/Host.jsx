@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./host.css";
-import axios from "axios";
+import axios from "./axiosInstance"; 
 import { useNavigate, useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
@@ -31,7 +31,7 @@ const Host = () => {
 
     // Fetch function data and gallery photos
     axios
-      .get(`http://localhost:3001/host/${userId}/${functionID}`)
+      .get(`/host/${userId}/${functionID}`)
       .then((response) => {
         setFunctionData(response.data);
         setGalleryPhotos(response.data.gallery); // Set gallery photos
@@ -46,7 +46,7 @@ const Host = () => {
 
     // Fetch user data to check if the user is frozen
     axios
-      .get(`http://localhost:3001/users/${userId}`)
+      .get(`/users/${userId}`)
       .then((response) => {
         setUser(response.data);
       })
@@ -68,7 +68,7 @@ const Host = () => {
 
       // Upload photo to Cloudinary
       axios
-        .post(`http://localhost:3001/upload`, formData, {
+        .post(`/upload`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -78,7 +78,7 @@ const Host = () => {
 
           //  Update gallery in server with Cloudinary URL
           axios
-            .post(`http://localhost:3001/update-gallery`, {
+            .post(`/update-gallery`, {
               userId,
               functionID,
               imageUrl,
@@ -108,7 +108,7 @@ const Host = () => {
       setIsLoading(true);
       axios
         .delete(
-          `http://localhost:3001/delete-photo/${userId}/${functionID}/${encodeURIComponent(
+          `/delete-photo/${userId}/${functionID}/${encodeURIComponent(
             photoUrl
           )}`
         )
