@@ -1,0 +1,12 @@
+[build]
+  base = "app" # This should be the directory where your client code is located
+  publish = "app/build" # This is where the built files will be published from
+  command = "npm install && npm run build" # Build command
+
+[build.environment]
+  NODE_VERSION = "14" # or whatever version you're using
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
