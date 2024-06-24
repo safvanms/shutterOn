@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import Account from "../Account/Account";
-import USER from '../../assets/user.png'
+import USER from "../../assets/user.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,9 +28,8 @@ const Header = () => {
   if (user && user.name) {
     const nameParts = user.name.split(" ");
     firstName = nameParts[0];
-    console.log(firstName)
+    console.log(firstName);
   }
-
 
   return (
     <div className="header Flex">
