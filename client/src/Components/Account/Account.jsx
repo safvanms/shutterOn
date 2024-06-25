@@ -20,7 +20,6 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
         // fetching froze status
 
         const userDetailResponse = await axios.get(`/users/${userId}`);
-        console.log(userDetailResponse);
         setUser(userDetailResponse.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

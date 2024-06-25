@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import Logo from "../../assets/logo.png";
 import { BiHide, BiShowAlt } from "react-icons/bi";
@@ -14,7 +14,13 @@ const Login = () => {
   const [verify, setVerify] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useUser();
+  const { login, user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleShowPassword = () => {
     setShow(!show);

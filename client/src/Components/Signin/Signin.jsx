@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./signin.css";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
@@ -17,7 +17,13 @@ const Signin = () => {
   const [verify, setVerify] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useUser();
+  const { login, user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleShowPassword = () => {
     setShow(!show);

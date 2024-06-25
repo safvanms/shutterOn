@@ -3,12 +3,12 @@ import "./admin.css";
 import AdminLogin from "./AdminLogin";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
-import Loader from '../Loader/Loader'
+import Loader from "../Loader/Loader";
 
 const userName = "shutterOn@1";
 const password = "shutterOn@1";
 const EXPIRATION_TIME = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 8;
 
 const Admin = () => {
   const [logged, setLogged] = useState(false);
@@ -16,8 +16,9 @@ const Admin = () => {
   const [inputPassword, setInputPassword] = useState("");
   const [error, setError] = useState("");
   const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState(""); // State for filtering the users
+  const [filter, setFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,10 +42,12 @@ const Admin = () => {
 
   useEffect(() => {
     if (logged) {
+      setLoading(true);
       axios
         .get("/users")
         .then((response) => setUsers(response.data))
-        .catch((error) => console.error("Error fetching users:", error));
+        .catch((error) => console.error("Error fetching users:", error))
+        .finally(() => setLoading(false));
     }
   }, [logged]);
 
@@ -73,6 +76,8 @@ const Admin = () => {
   };
 
   const handleFilterChange = (e) => {
+    if (!filteredUsers.includes(e.target.value)) {
+    }
     setFilter(e.target.value);
   };
 
@@ -105,6 +110,19 @@ const Admin = () => {
     );
   };
 
+  // to get total uploads
+
+  const getTotalUploads = (users) => {
+    return users.reduce((total, user) => {
+      return (
+        total +
+        user.events.reduce((count, event) => {
+          return count + (event.gallery ? event.gallery.length : 0);
+        }, 0)
+      );
+    }, 0);
+  };
+
   const handleFreezeToggle = (userId, currentFrozenState) => {
     const confirmationMessage = currentFrozenState
       ? "Are you sure you want to unfreeze this user?"
@@ -115,7 +133,6 @@ const Admin = () => {
       axios
         .post(`/users/${userId}/toggleFreeze`)
         .then((response) => {
-          // console.log(`User ${userId} freeze state: ${response.data.frozen}`);
           setUsers((prevUsers) =>
             prevUsers.map((user) =>
               user.userId === userId
@@ -147,9 +164,30 @@ const Admin = () => {
             />
           </div>
 
+          {currentItems.length > 0 && (
+            <div className="admin_user_details Flex">
+              <div>
+                <p>Total users </p>
+                <strong>{users.length}</strong>
+              </div>
+              <div>
+                {" "}
+                <p>Hosted users </p>
+                <strong>{eventHostedUsers.length}</strong>
+              </div>
+              <div>
+                <p>Total uploads </p>
+                <strong>{getTotalUploads(users)}</strong>
+              </div>
+            </div>
+          )}
+
           <div className="admin_table">
-            {currentItems.length === 0 ? (
-              <Loader message={'please wait...'}/>
+          {loading ? (
+              <Loader message={"please wait..."} />
+           ) : currentItems.length === 0 ? (
+              // <Loader message={"please wait..."} />
+              <p>No user found !</p>
             ) : (
               <>
                 <table>
@@ -205,6 +243,7 @@ const Admin = () => {
                     ))}
                   </tbody>
                 </table>
+
                 {/* Pagination */}
                 <div className="pagination Flex">
                   <button
@@ -222,18 +261,11 @@ const Admin = () => {
                     Next
                   </button>
                 </div>
-              </>
-            )}
-            {currentItems.length > 0 && (
-              <div className="admin_user_details Flex">
-                <p>
-                  Event hosted <strong>{eventHostedUsers.length}</strong> out of{" "}
-                  <strong>{users.length}</strong> users
-                </p>
+
                 <button className="logout" onClick={handleLogoutAdmin}>
                   Logout Admin
                 </button>
-              </div>
+              </>
             )}
           </div>
         </div>

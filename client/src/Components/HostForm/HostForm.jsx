@@ -3,6 +3,7 @@ import "./hostform.css";
 import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import LOGO from '../../assets/logo.jpeg'
 
 function HostForm() {
   const { userId } = useParams();
@@ -95,7 +96,7 @@ function HostForm() {
           name: "shutterOn",
           description: "Transaction",
           order_id: data.id,
-          image: "../../assets/logo.png",
+          image: LOGO,
           handler: async function (response) {
             const verifyResponse = await axios.post(
               `${process.env.REACT_APP_BACKEND_HOST_URL}/api/payment/verify`,
@@ -109,7 +110,8 @@ function HostForm() {
             );
 
             if (verifyResponse.data.message === "Payment Succeeded") {
-              navigate(`/host/${userId}/${formData.functionID}`);
+              setLoading(true)
+              navigate(`/host/${userId}/${formData.functionID}`,{replace:true});
             } else {
               alert("Payment verification failed. Please try again.");
             }
