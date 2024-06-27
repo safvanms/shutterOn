@@ -128,7 +128,7 @@ const SignUp = () => {
     <div className="signin Flex">
       <img src={Logo} alt="logo" className="logo" />
       <div className="signin_form_container Flex">
-        <h2>Sign Up</h2>
+        <h2>SignUp</h2>
         <form className="signin_form Flex" onSubmit={handleSubmit}>
           <div>
             <input
