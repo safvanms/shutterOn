@@ -49,7 +49,7 @@ const MainLayout = () => {
 const HeaderFooterWrapper = ({ children }) => {
   const location = useLocation();
   const isLoginRoute =
-    location.pathname === "/signin" || location.pathname === "/login";
+    location.pathname === "/signup" || location.pathname === "/login";
 
   return (
     <>
