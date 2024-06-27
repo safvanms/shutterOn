@@ -48,6 +48,10 @@
   color: black;
 }
 
+.admin_login_no_user img {
+  width: 100px;
+}
+
 /* admin table */
 
 .admin_table {

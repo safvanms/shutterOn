@@ -187,7 +187,6 @@ const Admin = () => {
           {loading ? (
               <Loader message={"please wait..."} />
            ) : currentItems.length === 0 ? (
-              // <Loader message={"please wait..."} />
               <p>No user found !</p>
             ) : (
               <>
