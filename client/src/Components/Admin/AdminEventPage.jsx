@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import { FaLocationDot } from "react-icons/fa6";
-
 
 const AdminEventPage = () => {
   const [showData, setShowData] = useState(null);
@@ -63,9 +62,9 @@ const AdminEventPage = () => {
       setIsLoading(true);
       axios
         .delete(
-          `/delete-photo/${userId}/${
-            showData.functionID
-          }/${encodeURIComponent(photoUrl)}`
+          `/delete-photo/${userId}/${showData.functionID}/${encodeURIComponent(
+            photoUrl
+          )}`
         )
         .then(() => {
           // Update eventDetails state by filtering out the deleted photo
@@ -108,15 +107,26 @@ const AdminEventPage = () => {
               <div>
                 <h2>{eventDetails.functionName}</h2>
                 <p>
-                <FaLocationDot color="darkred" size={15}/>
-                {" "}
+                  Event id :{" "}
+                  <strong style={{ cursor: "copy" }}>
+                    {eventDetails.functionID}
+                  </strong>
+                </p>
+                <p>
+                  <FaLocationDot color="darkred" size={15} />{" "}
                   {new Date(eventDetails.functionDate).toLocaleDateString()}
                   &nbsp; at {eventDetails.place}
                 </p>
               </div>
               <div>
-                <p>Event id : <strong style={{cursor:"copy"}}>{eventDetails.functionID}</strong></p>
-                <p>Hosted : {eventDetails.hostingTeam}</p>
+                <p>
+                  Hosted : <strong>{eventDetails.hostingTeam}</strong>
+                </p>
+                <p>Payment Id : {eventDetails.payment.razorpay_payment_id}</p>
+                <p>
+                  Payment Done :{" "}
+                  {new Date(eventDetails.payment.date).toLocaleDateString()}
+                </p>
               </div>
             </div>
 
@@ -139,7 +149,7 @@ const AdminEventPage = () => {
                   </div>
                 ))
               ) : eventDetails.paymentStatus !== true ? (
-                <h2  className="error">Payment not completed or Failed</h2>
+                <h2 className="error">Payment not completed or Failed</h2>
               ) : (
                 <p>No photos available for this event.</p>
               )}
