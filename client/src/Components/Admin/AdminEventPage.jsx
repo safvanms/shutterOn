@@ -3,6 +3,8 @@ import { MdDelete } from "react-icons/md";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import axios from "../../axiosInstance"; 
+import { FaLocationDot } from "react-icons/fa6";
+
 
 const AdminEventPage = () => {
   const [showData, setShowData] = useState(null);
@@ -106,13 +108,14 @@ const AdminEventPage = () => {
               <div>
                 <h2>{eventDetails.functionName}</h2>
                 <p>
-                  Date :{" "}
+                <FaLocationDot color="darkred" size={15}/>
+                {" "}
                   {new Date(eventDetails.functionDate).toLocaleDateString()}
                   &nbsp; at {eventDetails.place}
                 </p>
               </div>
               <div>
-                <p>Event ID : {eventDetails.functionID}</p>
+                <p>Event id : <strong style={{cursor:"copy"}}>{eventDetails.functionID}</strong></p>
                 <p>Hosted : {eventDetails.hostingTeam}</p>
               </div>
             </div>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./gallery.css";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "../../axiosInstance"; 
+import axios from "../../axiosInstance";
 import NoIMG from "../../assets/empty.png";
 import { BsDownload } from "react-icons/bs";
-import Loader from '../Loader/Loader'
+import Loader from "../Loader/Loader";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Gallery = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -81,15 +82,17 @@ const Gallery = () => {
           )}
           <div className="photos_wrapper Flex">
             {loading ? (
-              <Loader message={"Please wait."}/>
+              <Loader message={"Please wait."} />
             ) : galleryImages.length > 0 ? (
               galleryImages.map((image, index) => (
                 <div key={index} className="function_image">
-                  <img
+                  <LazyLoadImage
                     src={image}
                     alt={`pic-${index}`}
                     className="photo"
                     loading="lazy"
+                    effect="blur"
+                    placeholderSrc={image}
                   />
                   <div
                     className="download_added_image Flex"
@@ -103,7 +106,9 @@ const Gallery = () => {
             ) : wrongId ? (
               <div>
                 <h2>Sorry. This is a wrong ID !</h2>
-                <p className="re_enter" onClick={()=>navigate('/')} >Re enter id ?</p>
+                <p className="re_enter" onClick={() => navigate("/")}>
+                  Re enter id ?
+                </p>
               </div>
             ) : (
               <div className="wrong_id Flex">
