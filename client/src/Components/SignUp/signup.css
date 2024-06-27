@@ -31,6 +31,10 @@
   width: 220px;
 }
 
+.password_input{
+  width: 160px;
+}
+
 .signin_form button {
   padding: 8px 26px;
   background-color: var(--secondary);

@@ -18,7 +18,7 @@ const Footer = () => {
           <p>Contact us</p>
         </Link>
       </div>
-      <p className="copyright">&copy; {year} shutterOn. All rights reserved.</p>
+      <p className="copyright">copyright &copy; {year} shutterOn. All rights reserved.</p>
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./signin.css";
+import "./signup.css";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import axios from "../../axiosInstance";
 
-const Signin = () => {
+const SignUp = () => {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -128,7 +128,7 @@ const Signin = () => {
     <div className="signin Flex">
       <img src={Logo} alt="logo" className="logo" />
       <div className="signin_form_container Flex">
-        <h2>Sign In</h2>
+        <h2>Sign Up</h2>
         <form className="signin_form Flex" onSubmit={handleSubmit}>
           <div>
             <input
@@ -170,6 +170,7 @@ const Signin = () => {
               value={password}
               onChange={handleChange}
               required
+              className="password_input"
             />
             <span onClick={handleShowPassword} className="show">
               {show ? <BiShowAlt /> : <BiHide />}
@@ -202,4 +203,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignUp;

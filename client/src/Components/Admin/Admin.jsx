@@ -76,10 +76,11 @@ const Admin = () => {
   };
 
   const handleFilterChange = (e) => {
-    if (!filteredUsers.includes(e.target.value)) {
-    }
     setFilter(e.target.value);
+    setCurrentPage(1)
   };
+
+  // filter users 
 
   const filteredUsers = users.filter(
     (user) =>
@@ -158,7 +159,7 @@ const Admin = () => {
           <div className="filter_table">
             <input
               type="text"
-              placeholder="UserName/mail/userId"
+              placeholder="Filter by name/mail/userId"
               value={filter}
               onChange={handleFilterChange}
             />
@@ -167,7 +168,7 @@ const Admin = () => {
           {currentItems.length > 0 && (
             <div className="admin_user_details Flex">
               <div>
-                <p>Total users </p>
+                <p>Total Users </p>
                 <strong>{users.length}</strong>
               </div>
               <div>

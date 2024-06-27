@@ -72,9 +72,9 @@ const Gallery = () => {
                 {data && (
                   <>
                     <p>{data.functionName}</p>
-                    <p>Date : {Day(data.functionDate)}</p>
-                    <p>Event ID : {data.functionID}</p>
-                    <p>Hosting : {data.hostingTeam}</p>
+                    <p> {Day(data.functionDate)}</p>
+                    <p> ID : {data.functionID}</p>
+                    <p>Hosted : {data.hostingTeam}</p>
                   </>
                 )}
               </div>

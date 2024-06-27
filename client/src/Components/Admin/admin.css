@@ -23,6 +23,10 @@
   margin-top: 10px;
 }
 
+.filter_table input{
+  width: 300px;
+}
+
 .filter_table input {
   padding: 8px 15px;
   border-radius: 10px;
@@ -220,15 +224,15 @@
 
 .admin_user_details p {
   font-size: 14px;
-  background-color: #1b4242;
+  background-color: #5C8374;
   padding: 5px 15px;
   color: #ffff;
 }
 
 .admin_user_details strong {
-  font-size: 18px;
+  font-size: 21px;
   text-align: center;
-  background-color: #78a083;
+  background-color: #092635;
   color: #ffff;
   min-width: 30px;
   height: 100%;

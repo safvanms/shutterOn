@@ -144,11 +144,13 @@ function HostForm() {
         error.response.data.error === "Function ID already exists."
       ) {
         alert("Function ID already exists.");
+        setLoading(false)
       } else {
         console.error("Error during payment process:", error);
         alert(
           "An error occurred during the payment process. Please try again."
         );
+        setLoading(false)
       }
     }
   };

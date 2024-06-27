@@ -3,7 +3,6 @@ import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Home/Home";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Signin from "./Components/Signin/Signin";
 import Login from "./Components/Login/Login";
 import Gallery from "./Components/Gallery/Gallery";
 import { UserProvider } from "./auth";
@@ -13,10 +12,9 @@ import Admin from "./Components/Admin/Admin";
 import AdminEventPage from "./Components/Admin/AdminEventPage";
 import Contact from "./Components/Contact/Contact";
 import About from "./Components/About/About";
+import SignUp from "./Components/SignUp/SignUp";
 
 function App() {
-
-
 
   return (
     <BrowserRouter>
@@ -33,7 +31,7 @@ const MainLayout = () => {
       <HeaderFooterWrapper>
         <Routes>
           <Route index path="/" element={<Home />} />
-          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<SignUp/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/gallery/:id" element={<Gallery />} />
           <Route path="/host/:userId" element={<HostForm />} />

@@ -11,9 +11,10 @@
 .footer>div{
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     padding: 6px 0;
+    gap: 100px;
 }
 
 .footer>div p:hover{

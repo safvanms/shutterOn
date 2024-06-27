@@ -111,7 +111,7 @@ const Login = () => {
           <button type="submit">{verify ? "Verifying" : "Submit"}</button>
           <p className="sign_btn">
             Don't have an Account ?{" "}
-            <span onClick={() => navigate("/signin")}> Sign In</span>
+            <span onClick={() => navigate("/signup")}> Sign Up</span>
           </p>
         </form>
       </div>
