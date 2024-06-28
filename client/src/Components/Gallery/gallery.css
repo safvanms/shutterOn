@@ -6,7 +6,6 @@
 }
 
 .gallery_container {
-  /* border: 3px dotted #afafafdd; */
   padding: 10px;
   border-radius: 25px;
   width: 100%;
@@ -56,6 +55,7 @@
 
 .photos_wrapper {
   justify-content: center;
+  /* align-items: flex-start; */
   flex-wrap: wrap;
   padding: 20px 5px;
   gap: 25px;
@@ -65,6 +65,7 @@
   border-radius: 7px;
   width: 250px;
   transition: 0.2s ease-in-out;
+  border: 1px solid #aaaaaa74;
 }
 
 .photo:hover,
@@ -133,6 +134,45 @@
 
 .wrong_id p:hover {
   color: black;
+}
+
+.event_pin_container{
+  height: 100%;
+}
+
+.gallery_eventPin_form {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gallery_eventPin_form input {
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.gallery_eventPin_form input[type="number"]::-webkit-outer-spin-button,
+.gallery_eventPin_form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.gallery_eventPin_form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.gallery_eventPin_form button {
+  padding: 5px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  background-color: var(--secondary);
+  color: #ffff;
+  font-size: 14px;
+}
+
+.gallery_eventPin_form button:hover {
+ background-color: #0b0a1b;
 }
 
 .gratitude {

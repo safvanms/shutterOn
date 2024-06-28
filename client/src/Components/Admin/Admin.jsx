@@ -77,10 +77,10 @@ const Admin = () => {
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
-    setCurrentPage(1)
+    setCurrentPage(1);
   };
 
-  // filter users 
+  // filter users
 
   const filteredUsers = users.filter(
     (user) =>
@@ -184,9 +184,9 @@ const Admin = () => {
           )}
 
           <div className="admin_table">
-          {loading ? (
+            {loading ? (
               <Loader message={"please wait..."} />
-           ) : currentItems.length === 0 ? (
+            ) : currentItems.length === 0 ? (
               <p>No user found !</p>
             ) : (
               <>
@@ -211,7 +211,20 @@ const Admin = () => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
-                        <td>{user.password}</td>
+                        <td>
+                          <input
+                            className="admin_password_input"
+                            value={user.password}
+                            type="password"
+                            onMouseEnter={(e) => {
+                              e.target.type = "text";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.type = "password";
+                            }}
+                            readOnly
+                          />
+                        </td>
                         <td>{user.userId}</td>
                         <td>{hasGalleryItems(user.events)}</td>
                         <td>

@@ -22,15 +22,15 @@ if (!dbURI) {
 
 console.log(`MongoDB URI: ${dbURI}`);
 
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 10000, // Increase timeout to 10 seconds
-  socketTimeoutMS: 60000, // Close sockets after 45 seconds of inactivity
-})
-  .then(() => console.log('MongoDB connected...'))
-  .catch(err => console.log('MongoDB connection error:', err));
-
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000, // Increase timeout to 10 seconds
+    socketTimeoutMS: 60000, // Close sockets after 45 seconds of inactivity
+  })
+  .then(() => console.log("MongoDB connected..."))
+  .catch((err) => console.log("MongoDB connection error:", err));
 
 const fs = require("fs");
 
@@ -185,11 +185,13 @@ app.get("/users", (req, res) => {
     });
 });
 
+
 app.post("/users/:userId/events", (req, res) => {
   const userId = req.params.userId;
   const newEvent = {
     ...req.body,
-    paymentStatus: false, // Ensure payment status is initially false
+    paymentStatus: false,
+    eventPin: req.body.eventPin || "",
   };
 
   UserModel.findOne({ "events.functionID": newEvent.functionID })
@@ -219,6 +221,9 @@ app.post("/users/:userId/events", (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     });
 });
+
+
+
 
 app.get("/user/:id", (req, res) => {
   const userId = req.params.id;
@@ -326,7 +331,7 @@ app.post("/users/:userId/toggleFreeze", (req, res) => {
       return user.save(); // Save the user model with the new frozen state
     })
     .then((updatedUser) => {
-      console.log(`User ${userId} freeze state: ${updatedUser.frozen}`);
+      // console.log(`User ${userId} freeze state: ${updatedUser.frozen}`);
       res.json({ frozen: updatedUser.frozen });
     })
     .catch((error) => {
@@ -349,6 +354,29 @@ app.get("/users/:userId", (req, res) => {
     .catch((error) =>
       res.status(500).json({ error: "Error fetching user data" })
     );
+});
+
+// verify pin
+
+app.post("/verify-pin", async (req, res) => {
+  const { functionID, pin } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ "events.functionID": functionID });
+    if (!user) {
+      return res.status(404).json({ error: "Function ID not found" });
+    }
+
+    const event = user.events.find((event) => event.functionID === functionID);
+    if (event && event.eventPin === pin) {
+      res.json({ valid: true });
+    } else {
+      res.json({ valid: false });
+    }
+  } catch (error) {
+    console.error("Error verifying PIN:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 app.use("/api/payment", paymentRoutes);

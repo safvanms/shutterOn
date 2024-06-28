@@ -15,7 +15,8 @@ const EventSchema = new mongoose.Schema({
     razorpay_payment_id: String,
     razorpay_signature: String,
     date: Date,
-  }
+  },
+  eventPin: { type: String, default: "" },
 });
 
 const UserSchema = new mongoose.Schema({

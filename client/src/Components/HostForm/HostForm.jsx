@@ -3,13 +3,15 @@ import "./hostform.css";
 import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import LOGO from '../../assets/logo.jpeg'
+import LOGO from "../../assets/logo.jpeg";
 
 function HostForm() {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [functionIdError, setFunctionIdError] = useState(null);
+  const [pinError, setPinError] = useState(null);
+  const [isPrivate, setIsPrivate] = useState(false);
   const [formData, setFormData] = useState({
     functionName: "",
     functionDate: "",
@@ -19,6 +21,7 @@ function HostForm() {
     hostingTeam: "",
     phoneNumber: "",
     gallery: [],
+    eventPin: "",
   });
   const amount = 1999;
 
@@ -33,8 +36,10 @@ function HostForm() {
       });
   }, [userId]);
 
+
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
 
     if (name === "functionID") {
       const sanitizedValue = value.toLowerCase().replace(/[\s']/g, "");
@@ -51,6 +56,24 @@ function HostForm() {
         ...prevData,
         [name]: sanitizedValue,
       }));
+    } else if (type === "checkbox" && name === "private") {
+      setIsPrivate(checked);
+      setFormData((prevData) => ({
+        ...prevData,
+        eventPin: checked ? prevData.eventPin : "",
+      }));
+    } else if (name === "eventPin") {
+      if (!/^\d{6}$/.test(value)) {
+        // Ensure exactly 6 digits
+        setPinError("Event PIN must be exactly 6 digits.");
+      }  else {
+        setPinError(null);
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -58,6 +81,7 @@ function HostForm() {
       }));
     }
   };
+
 
   const navigate = useNavigate();
 
@@ -68,10 +92,16 @@ function HostForm() {
 
     if (!userData) {
       console.error("User data not available");
+      setLoading(false);
       return;
     }
 
-    const newEvent = { ...formData };
+    const newEvent = {
+      ...formData,
+      eventPin: isPrivate ? formData.eventPin : "",
+    };
+
+    console.log(formData);
 
     try {
       // Check if the function ID is available
@@ -98,22 +128,29 @@ function HostForm() {
           order_id: data.id,
           image: LOGO,
           handler: async function (response) {
-            const verifyResponse = await axios.post(
-              `${process.env.REACT_APP_BACKEND_HOST_URL}/api/payment/verify`,
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                userId: userId,
-                newEvent: newEvent,
-              }
-            );
+            try {
+              const verifyResponse = await axios.post(
+                `${process.env.REACT_APP_BACKEND_HOST_URL}/api/payment/verify`,
+                {
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  userId: userId,
+                  newEvent: newEvent,
+                }
+              );
 
-            if (verifyResponse.data.message === "Payment Succeeded") {
-              setLoading(true)
-              navigate(`/host/${userId}/${formData.functionID}`,{replace:true});
-            } else {
-              alert("Payment verification failed. Please try again.");
+              if (verifyResponse.data.message === "Payment Succeeded") {
+                setLoading(true);
+                navigate(`/host/${userId}/${formData.functionID}`, {
+                  replace: true,
+                });
+              } else {
+                alert("Payment verification failed. Please try again.");
+              }
+            } catch (verifyError) {
+              console.error("Error verifying payment:", verifyError);
+              alert("Error verifying payment. Please try again.");
             }
           },
           prefill: {
@@ -131,33 +168,34 @@ function HostForm() {
 
         const rzp = new window.Razorpay(options);
         rzp.on("payment.failed", function (response) {
+          console.error("Payment failed:", response.error);
           alert("Payment failed. Please try again.");
         });
         setLoading(false);
         rzp.open();
       } else {
-        console.error("Function ID is not available");
+        alert("Function ID is not available.");
+        setLoading(false);
       }
     } catch (error) {
+      console.error("Error during payment process:", error);
       if (
         error.response &&
         error.response.data.error === "Function ID already exists."
       ) {
         alert("Function ID already exists.");
-        setLoading(false)
       } else {
-        console.error("Error during payment process:", error);
         alert(
           "An error occurred during the payment process. Please try again."
         );
-        setLoading(false)
       }
+      setLoading(false);
     }
   };
 
   return (
     <div className="host_form_container Flex">
-      {loading && <Loader message={"please wait for a moment"}/>}
+      {loading && <Loader message={"please wait for a moment"} />}
       <h2>Host a function</h2>
       <form className="host_form Flex" onSubmit={handlePayment}>
         <div className="inputs Flex">
@@ -196,8 +234,31 @@ function HostForm() {
             onChange={handleChange}
             placeholder="Mr. Thomas"
           />
+          <label htmlFor="functionName">
+            Private event &nbsp;
+            <input
+              type="checkbox"
+              name="private"
+              checked={isPrivate}
+              onChange={handleChange}
+            />
+          </label>
         </div>
         <div className="inputs Flex">
+          {isPrivate && (
+            <>
+              <label htmlFor="eventPin">Event Pin * </label>
+              <input
+                type="number"
+                name="eventPin"
+                value={formData.eventPin}
+                onChange={handleChange}
+                placeholder="Enter event pin"
+                required={isPrivate}
+              />
+               {pinError && <p className="error">{pinError}</p>}
+            </>
+          )}
           <label htmlFor="functionID">Enter Function ID *</label>
           <input
             type="text"
@@ -226,9 +287,9 @@ function HostForm() {
             placeholder="9876543210"
             required
           />
-          <button type="submit" className="submit_form">
+          {!pinError && <button type="submit" className="submit_form">
             Pay now
-          </button>
+          </button>}
         </div>
       </form>
     </div>

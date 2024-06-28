@@ -108,6 +108,14 @@
   text-align: center !important;
 }
 
+.admin_password_input{
+  width: 80px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  text-align: center;
+}
+
 .freeze {
   border: none;
   background-color: #f79c9c;
@@ -298,6 +306,7 @@
 
 .a_users_event_gallery .photo {
   width: 150px;
+  border-bottom: 1px solid #bebebedd;
 }
 
 .a_users_event_gallery p {

@@ -107,6 +107,7 @@
 .added_image_img {
   border-radius: 7px;
   width: 200px;
+  border-bottom: 1px solid #bebebedd;
 }
 
 .added_image_img:hover,

@@ -1,10 +1,9 @@
-const express = require('express');
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
-const dotenv = require('dotenv');
-const UserModel = require('../server/models/users.js');  
-require('dotenv').config();
-
+const express = require("express");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
+const dotenv = require("dotenv");
+const UserModel = require("../server/models/users.js");
+require("dotenv").config();
 
 const router = express.Router();
 
@@ -36,7 +35,13 @@ router.post("/pay", (req, res) => {
 });
 
 router.post("/verify", async (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, userId, newEvent } = req.body;
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+    userId,
+    newEvent,
+  } = req.body;
 
   try {
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
@@ -58,8 +63,15 @@ router.post("/verify", async (req, res) => {
       // Save the event and payment details only if payment is successful
       const user = await UserModel.findOneAndUpdate(
         { userId },
-        { 
-          $push: { events: { ...newEvent, paymentStatus: true, payment } }
+        {
+          $push: {
+            events: {
+              ...newEvent,
+              paymentStatus: true,
+              payment,
+              eventPin: newEvent.eventPin || "",
+            },
+          },
         },
         { new: true }
       );
@@ -73,7 +85,7 @@ router.post("/verify", async (req, res) => {
       res.status(400).json({ message: "Invalid Signature" });
     }
   } catch (err) {
-    console.log(err);
+    console.error("Error verifying payment:", err);
     res.status(500).json({ message: "Internal Server Error!" });
   }
 });
