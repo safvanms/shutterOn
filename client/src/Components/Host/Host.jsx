@@ -231,7 +231,10 @@ const Host = () => {
             <>
               <div>
                 <p>ID:</p>
-                <h3>{functionData.functionID}</h3>
+                <h3>
+                  {functionData.functionID}{" "}
+                  {functionData.eventPin ? `(${functionData.eventPin})` : ""}
+                </h3>
               </div>
               <div>
                 <p>Owner:</p>

@@ -105,11 +105,12 @@ const AdminEventPage = () => {
           <>
             <div className="a_event_details_heading Flex">
               <div>
-                <h2>{eventDetails.functionName}</h2>
+                <h2>{eventDetails.functionName} <span> ({eventDetails.eventPin ? "Private" : ""})</span> </h2>
                 <p>
                   Event id :{" "}
                   <strong style={{ cursor: "copy" }}>
-                    {eventDetails.functionID}
+                    {eventDetails.functionID}{" "}
+                    {eventDetails.eventPin ? `(${eventDetails.eventPin})` : ""}
                   </strong>
                 </p>
                 <p>

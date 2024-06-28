@@ -55,7 +55,7 @@
 
 .photos_wrapper {
   justify-content: center;
-  /* align-items: flex-start; */
+  align-items: flex-start;
   flex-wrap: wrap;
   padding: 20px 5px;
   gap: 25px;
