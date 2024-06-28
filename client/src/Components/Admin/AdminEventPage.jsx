@@ -84,6 +84,18 @@ const AdminEventPage = () => {
     }
   };
 
+  const getFullTime = (date) => {
+    const eventDate = new Date(date);
+  
+    const month = eventDate.getMonth() + 1; 
+    const day = eventDate.getDate();
+    const year = eventDate.getFullYear();
+    const hours = eventDate.getHours().toString().padStart(2, "0");
+    const minutes = eventDate.getMinutes().toString().padStart(2, "0"); 
+    return `${month}/${day}/${year} at ${hours}:${minutes}`;
+  };
+  
+
   return (
     <div className="a_user_events Flex">
       <div className="a_user_events_header Flex">
@@ -105,7 +117,13 @@ const AdminEventPage = () => {
           <>
             <div className="a_event_details_heading Flex">
               <div>
-                <h2>{eventDetails.functionName} <span> ({eventDetails.eventPin ? "Private" : ""})</span> </h2>
+                <h2>
+                  {eventDetails.functionName}{" "}
+                  <span style={{ color: "gray" }}>
+                    {" "}
+                    ({eventDetails.eventPin ? "Private" : "Public"})
+                  </span>{" "}
+                </h2>
                 <p>
                   Event id :{" "}
                   <strong style={{ cursor: "copy" }}>
@@ -126,7 +144,7 @@ const AdminEventPage = () => {
                 <p>Payment Id : {eventDetails.payment.razorpay_payment_id}</p>
                 <p>
                   Payment Done :{" "}
-                  {new Date(eventDetails.payment.date).toLocaleDateString()}
+                  {getFullTime(eventDetails.payment.date)}
                 </p>
               </div>
             </div>

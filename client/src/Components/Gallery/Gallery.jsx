@@ -145,15 +145,17 @@ const Gallery = () => {
               </p>
             </div>
           ) : (
-            requiresEventPin &&  (
+            requiresEventPin &&
+            fetchedEventPin && (
               <div className="event_pin_container Flex">
                 <form
                   onSubmit={handleEventPinSubmit}
                   className="gallery_eventPin_form Flex"
                 >
-                  <label>Enter the 6 digit event PIN:</label>
+                  <label>Enter 6 digit event PIN </label>
                   <input
                     type="number"
+                    placeholder="XXXXXX"
                     value={eventPinInput}
                     onChange={(e) => setEventPinInput(e.target.value)}
                   />
