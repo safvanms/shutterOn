@@ -235,7 +235,7 @@ function HostForm() {
             placeholder="Mr. Thomas"
           />
           <label htmlFor="functionName">
-            Private event &nbsp;
+            Private function / event &nbsp;
             <input
               type="checkbox"
               name="private"
@@ -247,13 +247,13 @@ function HostForm() {
         <div className="inputs Flex">
           {isPrivate && (
             <>
-              <label htmlFor="eventPin">Event Pin * </label>
+              <label htmlFor="eventPin">Set an Event Pin * </label>
               <input
                 type="number"
                 name="eventPin"
                 value={formData.eventPin}
                 onChange={handleChange}
-                placeholder="Enter event pin"
+                placeholder="Enter 6 digit event pin"
                 required={isPrivate}
               />
                {pinError && <p className="error">{pinError}</p>}
