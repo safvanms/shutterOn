@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./signup.css";
 import { BiShowAlt, BiHide } from "react-icons/bi";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import axios from "../../axiosInstance";

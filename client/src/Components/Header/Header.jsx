@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./header.css";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import Account from "../Account/Account";
-import USER from "../../assets/user.png";
+import USER from "../../assets/user.svg";
 
 const Header = () => {
   const navigate = useNavigate();

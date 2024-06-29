@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo.svg";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";

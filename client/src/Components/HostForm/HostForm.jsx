@@ -3,7 +3,7 @@ import "./hostform.css";
 import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import LOGO from "../../assets/logo.jpeg";
+import LOGO from "../../assets/logo.svg";
 
 function HostForm() {
   const { userId } = useParams();
