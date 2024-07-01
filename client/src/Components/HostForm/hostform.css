@@ -51,10 +51,27 @@ label {
   margin-top: 20px;
 }
 
+.disabled{
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: var(--bg);
+  border-radius: 10px;
+  font-size: 16px;
+  color: #c4c4c4;
+  margin-top: 20px;
+}
+
 .submit_form:hover {
   background-color: var(--primary);
 }
 
 .razorpay-container .razorpay-modal iframe {
   height: 80vh;
+}
+
+@media (max-width:799px){
+  .host_form{
+    width: 80%;
+  }
 }

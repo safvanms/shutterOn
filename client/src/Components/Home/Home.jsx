@@ -70,7 +70,7 @@ const Home = () => {
         ))}
       </div>
       <div className="function_inputs Flex">
-        <h1>Welcome to shutterOn</h1>
+        <p>Welcome to shutterOn</p>
         <p>Enjoy the gallery of your favorite's photos.</p>
         <form className="function_id_form " onSubmit={handleSubmit}>
           <div className="function_id_input_container Flex">

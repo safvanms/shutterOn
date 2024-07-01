@@ -37,11 +37,12 @@
   opacity: 0;
 }
 
-.home h1 {
-  font-size: 3rem;
+.home p:nth-child(1) {
+  font-size: 3.1rem;
+  font-weight: 700;
 }
 
-.home p {
+.home p:nth-child(2) {
   font-size: 1.5rem;
   color: #dbdbdb;
 }
@@ -78,10 +79,6 @@
   color: #ffff;
   font-size: 14px;
 } 
-
-/* .function_btn:hover {
-  background-color: var(--primary);
-}  */
 
 .home_error {
   margin-top: 10px !important;

@@ -144,6 +144,20 @@
   color: #0d00a1;
 }
 
+.logout_admin{
+  border: none;
+  background-color: lightblue;
+  color: blue;
+  border-radius: 5px;
+  padding: 5px 8px;
+  min-width: 60px;
+}
+
+.logout_admin:hover {
+  background-color: #7bbacf;
+  color: #0d00a1;
+}
+
 /* pagination section */
 
 .pagination {

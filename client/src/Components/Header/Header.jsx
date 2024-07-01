@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./header.css";
-import Logo from "../../assets/logo.svg";
+import logo from "../../assets/shutterOnLogo.png";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../auth";
 import Account from "../Account/Account";
@@ -34,10 +34,7 @@ const Header = () => {
   return (
     <div className="header Flex">
       <div className="logo_Container Flex" onClick={() => navigate("/")}>
-        <img src={Logo} alt="logo" className="logo" />
-        <h1>
-          shutter<span>On</span>
-        </h1>
+        <img src={logo} alt="logo" className="logo"/>
       </div>
       <>
         {user ? (

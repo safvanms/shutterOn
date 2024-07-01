@@ -3,6 +3,8 @@ import "./account.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axiosInstance";
 import Loader from "../Loader/Loader";
+import { LuLogOut } from "react-icons/lu";
+import { MdAddToPhotos } from "react-icons/md";
 
 const Account = ({ isOpen, closeModal, logout, userId }) => {
   const [userData, setUserData] = useState(null);
@@ -93,21 +95,27 @@ const Account = ({ isOpen, closeModal, logout, userId }) => {
                 </select>
               )}
 
-              {!user.frozen && !window.location.pathname.includes("/host") && (
-                <button className="host_btn" onClick={() => handleHost(userId)}>
-                  Host a new Function
-                </button>
-              )}
-
               {user.frozen && (
                 <p className="frozen_message">
-                 Sorry , Your account has been frozen, contact us !
+                  Sorry , Your account has been frozen, contact us !
                 </p>
               )}
 
-              <button className="logout" onClick={handleLogout}>
+              {!user.frozen && !window.location.pathname.includes("/host") && (
+                <div
+                  className="host_btn Flex"
+                  onClick={() => handleHost(userId)}
+                >
+                  <MdAddToPhotos size={18} /> Host new Function
+                </div>
+              )}
+
+              <div className="logout Flex" onClick={handleLogout}>
+                <LuLogOut size={18} />
                 Logout
-              </button>
+              </div>
+
+
             </div>
           )}
         </div>

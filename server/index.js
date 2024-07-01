@@ -26,7 +26,7 @@ mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000, // Increase timeout to 10 seconds
+    serverSelectionTimeoutMS: 30000, // Increase timeout to 10 seconds
     socketTimeoutMS: 60000, // Close sockets after 45 seconds of inactivity
   })
   .then(() => console.log("MongoDB connected..."))

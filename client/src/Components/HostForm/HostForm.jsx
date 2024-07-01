@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./hostform.css";
 import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,7 +23,10 @@ function HostForm() {
     gallery: [],
     eventPin: "",
   });
+
   const amount = 1999;
+
+  const inputRef = useRef();
 
   useEffect(() => {
     axios
@@ -34,9 +37,8 @@ function HostForm() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+    inputRef.current.focus();
   }, [userId]);
-
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -66,7 +68,7 @@ function HostForm() {
       if (!/^\d{6}$/.test(value)) {
         // Ensure exactly 6 digits
         setPinError("Event PIN must be exactly 6 digits.");
-      }  else {
+      } else {
         setPinError(null);
       }
 
@@ -81,7 +83,6 @@ function HostForm() {
       }));
     }
   };
-
 
   const navigate = useNavigate();
 
@@ -100,8 +101,6 @@ function HostForm() {
       ...formData,
       eventPin: isPrivate ? formData.eventPin : "",
     };
-
-    console.log(formData);
 
     try {
       // Check if the function ID is available
@@ -207,6 +206,7 @@ function HostForm() {
             onChange={handleChange}
             placeholder="Jon weds Tessa"
             required
+            ref={inputRef}
           />
           <label htmlFor="functionDate">Function Date *</label>
           <input
@@ -234,7 +234,7 @@ function HostForm() {
             onChange={handleChange}
             placeholder="Mr. Thomas"
           />
-          <label htmlFor="functionName">
+          <label >
             Private function / event &nbsp;
             <input
               type="checkbox"
@@ -256,7 +256,7 @@ function HostForm() {
                 placeholder="Enter 6 digit event pin"
                 required={isPrivate}
               />
-               {pinError && <p className="error">{pinError}</p>}
+              {pinError && <p className="error">{pinError}</p>}
             </>
           )}
           <label htmlFor="functionID">Enter Function ID *</label>
@@ -287,9 +287,13 @@ function HostForm() {
             placeholder="9876543210"
             required
           />
-          {!pinError && <button type="submit" className="submit_form">
+          <button
+            type="submit"
+            disabled={pinError}
+            className={pinError ? "disabled" : "submit_form"}
+          >
             Pay now
-          </button>}
+          </button>
         </div>
       </form>
     </div>

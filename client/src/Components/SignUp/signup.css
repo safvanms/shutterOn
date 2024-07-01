@@ -36,7 +36,9 @@
 }
 
 .signin_form button {
-  padding: 8px 26px;
+  margin-top: 5px;
+  width: 100%;
+  padding: 10px;
   background-color: var(--secondary);
   color: var(--bg);
   border: none;

@@ -275,7 +275,7 @@ const Admin = () => {
                   </button>
                 </div>
 
-                <button className="logout" onClick={handleLogoutAdmin}>
+                <button className="logout_admin" onClick={handleLogoutAdmin}>
                   Logout Admin
                 </button>
               </>

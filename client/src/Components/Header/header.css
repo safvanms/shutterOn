@@ -15,21 +15,22 @@
   cursor: pointer;
 }
 
-.logo_Container h1 {
+/* .logo_Container h1 {
   font-size: 26px;
   background: linear-gradient(to right, #2c3d59, #66e074);
   -webkit-background-clip: text;
   color: transparent;
-}
+} */
 
 .logo {
-  width: 40px;
+  width: 170px;
 }
 
 .login_btn img{
   width: 30px;
   cursor: pointer;
   text-transform: capitalize;
+  margin-top: 5px;
 }
 
 .login_btn img:hover {

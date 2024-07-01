@@ -28,7 +28,7 @@
 }
 
 .user_account_details {
-  border-radius:  25px 25px 0px 0px;
+  border-radius: 25px 25px 0px 0px;
   width: 100%;
   padding: 25px 0;
   background-color: var(--primary);
@@ -72,8 +72,7 @@
   font-size: 12px;
 }
 
-
-.account_btns{
+.account_btns {
   padding: 25px 0;
   width: 100%;
 }
@@ -86,40 +85,44 @@
 .account_select {
   padding: 8px 15px;
   width: 180px;
-  border-radius: 20px;
+  border-radius: 12px;
 }
 
 .host_btn {
-  padding: 8px 15px;
+  align-items: center;
+  padding: 10px;
   width: 180px;
   background-color: green;
   color: #ffff;
-  border-radius: 20px;
-  border: none;
+  border-radius: 25px 4px 4px 25px;
+  gap: 5px;
   min-width: 100px;
   transition: 0.3s;
 }
 
 .host_btn:hover {
   background-color: #006000;
+  cursor: pointer;
 }
 
 .logout {
-  padding: 8px 15px;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
   width: 180px;
-  background-color: #a1a1a1;
-  border-radius: 20px;
+  background-color: #252525;
+  border-radius: 4px 25px 25px 4px;
   min-width: 100px;
   transition: 0.3s;
-  border: none;
   color: #ffff;
 }
 
 .logout:hover {
   background-color: black;
+  cursor: pointer;
 }
 
-.frozen_message{
+.frozen_message {
   font-size: 10px;
   color: red;
   font-weight: 800;
@@ -128,14 +131,17 @@
 @media (max-width: 799px) {
   .modal-content {
     width: 90%;
-    /* min-height: 0vh; */
     justify-content: space-between;
   }
   .user_account_details {
-    padding: 35px 0 ;
+    padding: 35px 0;
   }
   .btns {
     flex-direction: column;
     gap: 15px;
+  }
+  .host_btn,.logout{
+    border-radius: 10px;
+    padding: 7px;
   }
 }
