@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
+import { FaSearch } from "react-icons/fa";
+
 
 import BG1 from "../../assets/mrg1.jpg";
 import BG2 from "../../assets/mrg2.jpg";
@@ -47,7 +49,6 @@ const Home = () => {
     navigate(`/gallery/${functionId}`);
   };
 
-  
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === "return") {
       e.preventDefault();
@@ -71,22 +72,24 @@ const Home = () => {
       <div className="function_inputs Flex">
         <h1>Welcome to shutterOn</h1>
         <p>Enjoy the gallery of your favorite's photos.</p>
-        <form className="function_id_form Flex" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Enter Function / Event ID"
-            className="function_id"
-            value={functionId}
-            onChange={handleChange}
-            name="function_id"
-            style={{ outline: functionIdError && "2px solid red" }}
-            onKeyDown={handleKeyDown}
-          />
-          {!functionIdError && functionId !== " " && functionId && (
-            <button type="submit" className="function_btn">
-              View
-            </button>
-          )}
+        <form className="function_id_form " onSubmit={handleSubmit}>
+          <div className="function_id_input_container Flex">
+            <input
+              type="text"
+              placeholder="Enter Function / Event ID"
+              className="function_id"
+              value={functionId}
+              onChange={handleChange}
+              name="function_id"
+              style={{ outline: functionIdError && "2px solid red" }}
+              onKeyDown={handleKeyDown}
+            />
+            {!functionIdError && functionId !== " " && functionId && (
+              <button type="submit" className="function_btn">
+              <FaSearch color="gray" size={18}/>
+              </button>
+            )}
+          </div>
         </form>
         {functionIdError && <p className="home_error">{functionIdError}</p>}
       </div>

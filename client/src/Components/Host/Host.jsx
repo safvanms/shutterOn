@@ -57,6 +57,7 @@ const Host = () => {
 
   const handleFileChange = (e) => {
     setSelectedPhoto(e.target.files[0]);
+    setConfirmed(false)
   };
 
   const handleConfirmPhoto = () => {
@@ -99,6 +100,8 @@ const Host = () => {
           console.error("Error uploading photo to Cloudinary:", error);
           setIsLoading(false);
           alert("upload less sized images than 10MB ");
+          setConfirmed(false)
+          setSelectedPhoto(null)
         });
     }
   };
@@ -195,7 +198,7 @@ const Host = () => {
                 <img
                   className="added_image_img"
                   src={photo}
-                  alt={`Gallery ${index}`}
+                  alt={`Gallery_${index}`}
                   loading="lazy"
                 />
                 {!user?.frozen && (

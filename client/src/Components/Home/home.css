@@ -52,36 +52,38 @@
   z-index: 1;
 }
 
-.function_id_form {
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-top: 30px;
+.function_id_input_container {
+  background-color: #ffff;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid gray;
 }
 
 .function_id {
-  padding: 10px;
+  padding:5px;
   width: 300px;
   border-radius: 10px;
-  border: 1px solid var(--primary);
-  outline-color: var(--primary);
+  border: none;
+  outline: none;
   font-size: 16px;
+  font-weight: 600;
 }
 
-.function_btn {
-  padding: 5px 40px;
+ .function_btn {
+  margin: 5px 0px 0 0;
   border-radius: 10px;
-  border: 1px solid var(--primary);
-  background-color: var(--secondary);
+  background-color: transparent;
+  border: none;
   color: #ffff;
   font-size: 14px;
-  height: 45px;
-}
+} 
 
-.function_btn:hover {
+/* .function_btn:hover {
   background-color: var(--primary);
-}
+}  */
 
-.home_error{
+.home_error {
   margin-top: 10px !important;
   font-size: 10px !important;
   color: red !important;

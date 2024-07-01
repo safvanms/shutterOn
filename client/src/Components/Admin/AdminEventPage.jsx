@@ -155,7 +155,7 @@ const AdminEventPage = () => {
                   <div className="added_image" key={index}>
                     <img
                       src={photo}
-                      alt={`Event ${index}`}
+                      alt={`${eventDetails.functionID}_${index}`}
                       className="photo"
                       loading="lazy"
                     />

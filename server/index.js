@@ -71,8 +71,6 @@ const upload = multer({ storage: storage });
 app.post("/upload", upload.single("photo"), (req, res) => {
   const file = req.file;
 
-  console.log(file);
-
   // Upload image to Cloudinary
   cloudinary.uploader.upload(file.path, (error, result) => {
     if (error) {
