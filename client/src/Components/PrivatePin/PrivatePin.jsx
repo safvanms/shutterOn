@@ -20,9 +20,7 @@ const PrivatePin = ({
     if (isNaN(value) && value !== "Backspace") {
       return;
     }
-
     setPinError(false);
-
     const newPin = [...pin];
     newPin[inputIndex] = value === "Backspace" ? "" : value;
 
