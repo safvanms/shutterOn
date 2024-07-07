@@ -136,45 +136,6 @@
   color: black;
 }
 
-.event_pin_container{
-  height: 100%;
-}
-
-.gallery_eventPin_form {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.gallery_eventPin_form input {
-  padding: 5px;
-  border-radius: 10px;
-  font-size: 20px;
-  text-align: center;
-}
-
-.gallery_eventPin_form input[type="number"]::-webkit-outer-spin-button,
-.gallery_eventPin_form input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.gallery_eventPin_form input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.gallery_eventPin_form button {
-  padding: 5px 20px;
-  border-radius: 10px;
-  border: 1px solid var(--primary);
-  background-color: var(--secondary);
-  color: #ffff;
-  font-size: 14px;
-}
-
-.gallery_eventPin_form button:hover {
- background-color: #0b0a1b;
-}
-
 .gratitude {
   margin-top: 25px;
   font-size: 12px;

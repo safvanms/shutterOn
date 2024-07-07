@@ -6,6 +6,7 @@ import NoIMG from "../../assets/empty.png";
 import { BsDownload } from "react-icons/bs";
 import Loader from "../Loader/Loader";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import PrivatePin from "../PrivatePin/PrivatePin";
 
 const Gallery = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -54,13 +55,13 @@ const Gallery = () => {
     fetchGalleryData();
   }, [id]);
 
-  const handleEventPinSubmit = (e) => {
+  const handleEventPinSubmit = (e, pinValue) => {
     e.preventDefault();
-    if (eventPinInput === fetchedEventPin) {
+    if (pinValue === fetchedEventPin) {
       setEventPinVerified(true);
       setWrongId(false);
     } else {
-      setPinError("Wrong event Pin , check the pin");
+      setPinError("Wrong event Pin , Retry !");
     }
   };
 
@@ -82,7 +83,6 @@ const Gallery = () => {
     };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
-
 
   return (
     <>
@@ -148,22 +148,12 @@ const Gallery = () => {
           ) : (
             requiresEventPin &&
             fetchedEventPin && (
-              <div className="event_pin_container Flex">
-                <form
-                  onSubmit={handleEventPinSubmit}
-                  className="gallery_eventPin_form Flex"
-                >
-                  <label>Enter 6 digit event PIN </label>
-                  <input
-                    type="number"
-                    placeholder="XXXXXX"
-                    value={eventPinInput}
-                    onChange={(e) => setEventPinInput(e.target.value)}
-                  />
-                  {pinError && <p className="error">{pinError}</p>}
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
+              <PrivatePin
+                handleEventPinSubmit={handleEventPinSubmit}
+                setPinError={setPinError}
+                setEventPinInput={setEventPinInput}
+                pinError={pinError}
+              />
             )
           )}
         </div>

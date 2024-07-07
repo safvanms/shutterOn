@@ -1,0 +1,62 @@
+.event_pin_container {
+  height: 500px;
+  flex-direction: column;
+}
+
+.event_pin_container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.title {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.pin-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pin-inputs input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.pin-inputs input:focus {
+  border-color: green;
+  box-shadow: 0 0 5px blue;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.pin_buttons {
+  margin-top: 15px;
+  gap: 15px;
+  align-items: center;
+}
+
+.pin-error {
+  color: red;
+  margin-top: 10px;
+}
