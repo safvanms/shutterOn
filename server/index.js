@@ -20,8 +20,6 @@ if (!dbURI) {
   process.exit(1);
 }
 
-console.log(`MongoDB URI: ${dbURI}`);
-
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -133,6 +131,7 @@ app.delete("/delete-photo/:userId/:functionID/:photoUrl", (req, res) => {
   });
 });
 
+// user login
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -141,11 +140,11 @@ app.post("/login", (req, res) => {
       if (user.password === password) {
         res.json({
           success: true,
-          userId: user.userId, // Use userId instead of _id
+          userId: user.userId,
           name: user.name,
           email: user.email,
           phone: user.phone,
-          events: user.events, // Include events in the response
+          events: user.events,
         });
       } else {
         res.status(401).json("The Password is incorrect");
@@ -156,6 +155,7 @@ app.post("/login", (req, res) => {
   });
 });
 
+// user email verification
 app.post("/users", (req, res) => {
   const { email } = req.body;
 
@@ -171,7 +171,6 @@ app.post("/users", (req, res) => {
 });
 
 // for admin page
-
 app.get("/users", (req, res) => {
   UserModel.find({})
     .then((users) => {
@@ -183,7 +182,7 @@ app.get("/users", (req, res) => {
     });
 });
 
-
+// add events
 app.post("/users/:userId/events", (req, res) => {
   const userId = req.params.userId;
   const newEvent = {
@@ -220,13 +219,11 @@ app.post("/users/:userId/events", (req, res) => {
     });
 });
 
-
-
-
+// find the user by the userId
 app.get("/user/:id", (req, res) => {
   const userId = req.params.id;
 
-  UserModel.findOne({ userId }) // Use findOne with userId
+  UserModel.findOne({ userId })
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -239,6 +236,7 @@ app.get("/user/:id", (req, res) => {
     });
 });
 
+// host event
 app.get("/hosts/:id", (req, res) => {
   const functionID = req.params.id;
 
@@ -257,6 +255,7 @@ app.get("/hosts/:id", (req, res) => {
     });
 });
 
+// checking functionId if it's available or not
 app.get("/events/check-function-id/:functionID", (req, res) => {
   const { functionID } = req.params;
 
@@ -315,6 +314,7 @@ app.get("/get-event/:functionID", (req, res) => {
     });
 });
 
+// freeze users (admin)
 app.post("/users/:userId/toggleFreeze", (req, res) => {
   const { userId } = req.params;
 
@@ -339,7 +339,6 @@ app.post("/users/:userId/toggleFreeze", (req, res) => {
 });
 
 // for fetching details of frozen in account
-
 app.get("/users/:userId", (req, res) => {
   const { userId } = req.params;
   UserModel.findOne({ userId })
@@ -355,7 +354,6 @@ app.get("/users/:userId", (req, res) => {
 });
 
 // verify pin
-
 app.post("/verify-pin", async (req, res) => {
   const { functionID, pin } = req.body;
 

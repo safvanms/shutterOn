@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./home.css";
 import { FaSearch } from "react-icons/fa";
 
-
 import BG1 from "../../assets/mrg1.jpg";
 import BG2 from "../../assets/mrg2.jpg";
 import BG3 from "../../assets/mrg3.jpg";
@@ -12,6 +11,7 @@ import BG6 from "../../assets/mrg6.jpg";
 import BG7 from "../../assets/mrg7.jpg";
 import BG8 from "../../assets/mrg8.jpg";
 import { useNavigate } from "react-router-dom";
+import RandomHomeImgaes from "../RandomHomeImages/RandomHomeImages";
 
 const Home = () => {
   const images = [BG1, BG2, BG3, BG4, BG5, BG6, BG7, BG8];
@@ -56,44 +56,47 @@ const Home = () => {
   };
 
   return (
-    <div className="home Flex">
-      <div className="image-wrapper">
-        {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`bg-${index}`}
-            className={`home_bg ${
-              index === currentImageIndex ? "visible" : "hidden"
-            }`}
-          />
-        ))}
-      </div>
-      <div className="function_inputs Flex">
-        <p>Welcome to shutterOn</p>
-        <p>Enjoy the gallery of your favorite's photos.</p>
-        <form className="function_id_form " onSubmit={handleSubmit}>
-          <div className="function_id_input_container Flex">
-            <input
-              type="text"
-              placeholder="Enter Function / Event ID"
-              className="function_id"
-              value={functionId}
-              onChange={handleChange}
-              name="function_id"
-              style={{ outline: functionIdError && "2px solid red" }}
-              onKeyDown={handleKeyDown}
+    <>
+      <div className="home Flex">
+        <div className="image-wrapper">
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`bg-${index}`}
+              className={`home_bg ${
+                index === currentImageIndex ? "visible" : "hidden"
+              }`}
             />
-            {!functionIdError && functionId !== " " && functionId && (
-              <button type="submit" className="function_btn">
-              <FaSearch color="gray" size={18}/>
-              </button>
-            )}
-          </div>
-        </form>
-        {functionIdError && <p className="home_error">{functionIdError}</p>}
+          ))}
+        </div>
+        <div className="function_inputs Flex">
+          <p>Welcome to shutterOn</p>
+          <p>Enjoy the gallery of your favorite's photos.</p>
+          <form className="function_id_form " onSubmit={handleSubmit}>
+            <div className="function_id_input_container Flex">
+              <input
+                type="text"
+                placeholder="Enter Function / Event ID"
+                className="function_id"
+                value={functionId}
+                onChange={handleChange}
+                name="function_id"
+                style={{ outline: functionIdError && "2px solid red" }}
+                onKeyDown={handleKeyDown}
+              />
+              {!functionIdError && functionId !== " " && functionId && (
+                <button type="submit" className="function_btn">
+                  <FaSearch color="gray" size={18} />
+                </button>
+              )}
+            </div>
+          </form>
+          {functionIdError && <p className="home_error">{functionIdError}</p>}
+        </div>
       </div>
-    </div>
+      <RandomHomeImgaes />
+    </>
   );
 };
 

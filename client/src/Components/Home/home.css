@@ -1,6 +1,5 @@
 .home {
   min-height: 90vh;
-  height: 600px;
   padding: 15px;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -62,7 +61,7 @@
 }
 
 .function_id {
-  padding:5px;
+  padding: 5px;
   width: 300px;
   border-radius: 10px;
   border: none;
@@ -71,14 +70,14 @@
   font-weight: 600;
 }
 
- .function_btn {
+.function_btn {
   margin: 5px 0px 0 0;
   border-radius: 10px;
   background-color: transparent;
   border: none;
   color: #ffff;
   font-size: 14px;
-} 
+}
 
 .home_error {
   margin-top: 10px !important;

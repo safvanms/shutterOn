@@ -108,6 +108,7 @@
   border-radius: 7px;
   width: 200px;
   border-bottom: 1px solid #bebebedd;
+  border: 1px solid #aaaaaa74;
 }
 
 .added_image_img:hover,

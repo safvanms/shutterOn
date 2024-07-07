@@ -1,0 +1,47 @@
+.random_images_heading {
+  padding: 20px 0 10px 30px;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.random_images_heading p {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(to right, #2c3d59, #66e074);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.random_photos {
+  padding: 20px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.random_photos img {
+  width: 31%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 6px;
+  filter: brightness(0.5);
+  transition: 0.3s;
+}
+
+.random_photos img:hover {
+  filter: brightness(0.7);
+  transform: scale(1.05);
+}
+
+@media (max-width: 799px) {
+  .random_images_heading {
+    padding: 20px 0 0 20px;
+  }
+  .random_photos {
+    padding: 20px 0;
+  }
+  .random_photos img {
+    width: 45%;
+    height: 250px;
+    object-fit: cover;
+  }
+}
