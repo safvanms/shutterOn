@@ -24,7 +24,9 @@ const PrivatePin = ({
     const newPin = [...pin];
     newPin[inputIndex] = value === "Backspace" ? "" : value;
 
+    
     setPin(newPin);
+
 
     let focusChange = value === "Backspace" && inputIndex > 0 ? -1 : +1;
     inputRef.current[inputIndex + focusChange]?.focus();
