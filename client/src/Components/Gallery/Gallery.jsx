@@ -22,6 +22,8 @@ const Gallery = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  console.log(eventPinInput)
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchGalleryData = async () => {
