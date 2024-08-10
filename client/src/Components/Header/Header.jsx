@@ -34,7 +34,12 @@ const Header = () => {
   return (
     <div className="header Flex">
       <div className="logo_Container Flex" onClick={() => navigate("/")}>
-        <img src={logo} alt="logo" className="logo"/>
+        <img src={logo} alt="logo" className="logo" />
+        {window.location.pathname.includes('admin') && (
+          <div className="admin_header">
+            <h2>Admin</h2>
+          </div>
+        )}
       </div>
       <>
         {user ? (

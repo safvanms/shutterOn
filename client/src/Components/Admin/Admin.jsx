@@ -3,7 +3,9 @@ import "./admin.css";
 import AdminLogin from "./AdminLogin";
 import axios from "../../axiosInstance";
 import { useNavigate } from "react-router-dom";
-import Loader from "../Loader/Loader";
+import AdminTabs from "./AdminTabs";
+import AdminDashboard from "./AdminDashboard";
+import AdminTable from "./AdminTable";
 
 const userName = "shutterOn@1";
 const password = "shutterOn@1";
@@ -19,6 +21,7 @@ const Admin = () => {
   const [filter, setFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [tab, setTab] = useState("dashboard");
 
   const navigate = useNavigate();
 
@@ -89,8 +92,6 @@ const Admin = () => {
       user.email.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const eventHostedUsers = users.filter((user) => user.events.length > 0);
-
   // Calculate pagination variables
   const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
   const lastIndex = currentPage * ITEMS_PER_PAGE;
@@ -124,6 +125,8 @@ const Admin = () => {
     }, 0);
   };
 
+  const eventHostedUsers = users.filter((user) => user.events.length > 0);
+
   const handleFreezeToggle = (userId, currentFrozenState) => {
     const confirmationMessage = currentFrozenState
       ? "Are you sure you want to unfreeze this user?"
@@ -149,139 +152,55 @@ const Admin = () => {
   };
 
   return (
-    <>
+    <div className="admin Flex">
+      {/* {logged && (
+        <div className="admin_header">
+          <h1>shutterOn Admin</h1>
+        </div>
+      )} */}
       {logged ? (
-        <div className="admin Flex">
-          <div className="admin_header">
-            <h1>shutterOn Admin</h1>
+        <>
+          <div className="tabs_container Flex">
+            <AdminTabs tab={tab} setTab={setTab} />
           </div>
 
-          <div className="filter_table">
-            <input
-              type="text"
-              placeholder="Filter by name/mail/userId"
-              value={filter}
-              onChange={handleFilterChange}
+          {tab === "dashboard" && (
+            <AdminDashboard
+              currentItems={currentItems}
+              getTotalUploads={getTotalUploads}
+              eventHostedUsers={eventHostedUsers}
+              users={users}
             />
-          </div>
-
-          {currentItems.length > 0 && (
-            <div className="admin_user_details Flex">
-              <div>
-                <p>Total Users </p>
-                <strong>{users.length}</strong>
-              </div>
-              <div>
-                {" "}
-                <p>Hosted users </p>
-                <strong>{eventHostedUsers.length}</strong>
-              </div>
-              <div>
-                <p>Total uploads </p>
-                <strong>{getTotalUploads(users)}</strong>
-              </div>
-            </div>
           )}
 
-          <div className="admin_table">
-            {loading ? (
-              <Loader message={"please wait..."} />
-            ) : currentItems.length === 0 ? (
-              <p>No user found !</p>
-            ) : (
-              <>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Sl no</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Password</th>
-                      <th>UserID</th>
-                      <th>Uploads</th>
-                      <th>Events</th>
-                      <th>Controls</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentItems.map((user, index) => (
-                      <tr key={user.userId}>
-                        <td>{firstIndex + index + 1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
-                        <td>
-                          <input
-                            className="admin_password_input"
-                            value={user.password}
-                            type="password"
-                            onMouseEnter={(e) => {
-                              e.target.type = "text";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.target.type = "password";
-                            }}
-                            readOnly
-                          />
-                        </td>
-                        <td>{user.userId}</td>
-                        <td>{hasGalleryItems(user.events)}</td>
-                        <td>
-                          {user.events.length > 0 ? (
-                            <button
-                              className="event_show_button"
-                              onClick={() => handleOpenEvents(user.userId)}
-                            >
-                              View{" "}
-                              {user.events.length === 1
-                                ? user.events.length + " Event "
-                                : user.events.length + " Events "}
-                            </button>
-                          ) : (
-                            <p className="no_event">No events</p>
-                          )}
-                        </td>
-                        <td>
-                          <button
-                            className={`${user.frozen ? "unfreeze" : "freeze"}`}
-                            onClick={() =>
-                              handleFreezeToggle(user.userId, user.frozen)
-                            }
-                          >
-                            {user.frozen ? "Unfreeze" : "Freeze"}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {tab === "table" && (
+            <>
+              <div className="filter_table">
+                <input
+                  type="text"
+                  placeholder="Filter by name/mail/userId"
+                  value={filter}
+                  onChange={handleFilterChange}
+                />
+              </div>
 
-                {/* Pagination */}
-                <div className="pagination Flex">
-                  <button
-                    onClick={() => paginate(currentPage - 1)}
-                    disabled={currentPage === 1}
-                  >
-                    Prev
-                  </button>
-                  &nbsp; {currentPage} of {totalPages}
-                  &nbsp;
-                  <button
-                    onClick={() => paginate(currentPage + 1)}
-                    disabled={lastIndex >= filteredUsers.length}
-                  >
-                    Next
-                  </button>
-                </div>
-
-                <button className="logout_admin" onClick={handleLogoutAdmin}>
-                  Logout Admin
-                </button>
-              </>
-            )}
-          </div>
-        </div>
+              <AdminTable
+                loading={loading}
+                currentItems={currentItems}
+                firstIndex={firstIndex}
+                hasGalleryItems={hasGalleryItems}
+                handleOpenEvents={handleOpenEvents}
+                handleFreezeToggle={handleFreezeToggle}
+                handleLogoutAdmin={handleLogoutAdmin}
+                paginate={paginate}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                lastIndex={firstIndex}
+                filteredUsers={filteredUsers}
+              />
+            </>
+          )}
+        </>
       ) : (
         <AdminLogin
           handleLogIn={handleLogIn}
@@ -292,7 +211,7 @@ const Admin = () => {
           error={error}
         />
       )}
-    </>
+    </div>
   );
 };
 
