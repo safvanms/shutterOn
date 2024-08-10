@@ -47,7 +47,7 @@ const PrivatePin = ({
           {pin.map((otpValue, index) => {
             return (
               <input
-                type="text"
+                type="tel"
                 key={index}
                 value={otpValue}
                 ref={(input) => (inputRef.current[index] = input)}
