@@ -36,7 +36,9 @@ const AdminDashboard = ({
               <strong>{getTotalUploads(users)}</strong>
             </div>
           </div>
-        ):<Loader message='Please wait...' />}
+        ) : (
+          <Loader message="Please wait..." />
+        )}
       </>
     </div>
   );
