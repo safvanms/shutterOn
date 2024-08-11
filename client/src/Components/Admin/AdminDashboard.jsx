@@ -1,6 +1,7 @@
 import React from "react";
 import "./admin.css";
 import { FaImages, FaUsers } from "react-icons/fa";
+import Loader from "../Loader/Loader";
 
 const AdminDashboard = ({
   currentItems,
@@ -12,12 +13,12 @@ const AdminDashboard = ({
     <div className="dashboard_container Flex">
       <>
         <div className="dashboard">Dashboard </div>
-        {currentItems.length > 0 && (
+        {currentItems.length > 0 ? (
           <div className="admin_user_details Flex">
             <div className="user_details Flex">
               <div className=" Flex" style={{ gap: "5px" }}>
                 <FaUsers size={25} color="white" />
-                <p>Total Users </p>
+                <p>Users </p>
               </div>
               <strong>{users.length}</strong>
             </div>
@@ -29,13 +30,13 @@ const AdminDashboard = ({
             </div>
             <div className="user_details Flex">
               <div className=" Flex" style={{ gap: "5px" }}>
-                <p>Total uploads </p>
+                <p>Uploads </p>
                 <FaImages size={25} color="white" />
               </div>
               <strong>{getTotalUploads(users)}</strong>
             </div>
           </div>
-        )}
+        ):<Loader message='Please wait...' />}
       </>
     </div>
   );

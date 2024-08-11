@@ -26,7 +26,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     const storedLogged = localStorage.getItem("logged");
     const storedExpiration = localStorage.getItem("expiration");
 
@@ -41,7 +41,7 @@ const Admin = () => {
         localStorage.removeItem("expiration");
       }
     }
-  }, [users]);
+  }, []);
 
   useEffect(() => {
     if (logged) {

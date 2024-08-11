@@ -19,7 +19,7 @@
 }
 
 .filter_table {
-  margin-top: 30px;
+  margin-top: 80px;
 }
 
 .filter_table input {
@@ -70,7 +70,7 @@
 }
 
 .admin_table th {
-  background-color: #2c3d59 !important;
+  background-color: #5c8374 !important;
   color: #f5f5f5;
   font-weight: lighter !important;
 }
@@ -105,6 +105,14 @@
 .admin_table th,
 .admin_table td {
   text-align: center;
+}
+
+.name_row {
+  width: 150px;
+}
+
+.mail_row {
+  width: 250px;
 }
 
 .admin_table td:nth-child(7) {
@@ -250,20 +258,21 @@
 
 /* users details */
 
-.dashboard_container{
+.dashboard_container {
   flex-direction: column;
 }
 
-.dashboard{
+.dashboard {
   font-size: 22px;
-  margin: 25px 0;
+  margin: 80px 0 40px 0;
 }
 
 .admin_user_details {
   margin-top: 10px;
   justify-content: center;
   gap: 25px;
-  align-items: flex-end;
+  padding: 15px;
+  flex-wrap: wrap;
 }
 
 .user_details {
@@ -273,7 +282,7 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 5px;
   min-width: 150px;
-  transition: 0.5s;
+  transition: 1s;
 }
 
 .user_details:hover {
@@ -357,9 +366,13 @@
 
 .tabs_container {
   justify-content: flex-start;
-  border-bottom: 1px solid #dddd;
-  padding-bottom: 5px;
+  border-bottom: 1px solid #dddddd8b;
   width: 100%;
+  position: fixed;
+  top: 82px;
+  left: 0px;
+  background: #ffffff;
+  padding: 10px;
 }
 
 .tabs {
@@ -367,6 +380,7 @@
   padding: 4px;
   background-color: #5c8374;
   border-radius: 5px;
+  color: #eeeeee;
 }
 
 .details_tab,
@@ -389,5 +403,19 @@
   }
   .admin_user_details {
     width: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .admin_table th,
+  .admin_table td {
+    font-size: 9px;
+  }
+  .name_row {
+    width: 80px;
+  }
+
+  .mail_row {
+    width: 120px;
   }
 }

@@ -44,8 +44,8 @@ const AdminTable = ({
                 {currentItems?.map((user, index) => (
                   <tr key={user.userId}>
                     <td>{firstIndex + index + 1}</td>
-                    <td style={{ width: "150px" }}>{user.name}</td>
-                    <td style={{ width: "250px" }}>{user.email}</td>
+                    <td className="name_row">{user.name}</td>
+                    <td className="mail_row">{user.email}</td>
                     <td>{user.phone}</td>
                     <td>
                       <input
@@ -94,7 +94,7 @@ const AdminTable = ({
             </table>
           </>
         )}
-        {currentItems?.length !== 0 && (
+        {currentItems?.length > 0 && (
           <div
             style={{
               display: "flex",
