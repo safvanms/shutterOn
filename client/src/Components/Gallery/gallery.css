@@ -1,18 +1,22 @@
 .gallery {
   flex-direction: column;
   min-height: 100vh;
-  padding: 15px;
+  padding: 0;
   background-color: #f1fcff75;
 }
 
 .gallery_container {
   padding: 10px;
-  border-radius: 25px;
-  width: 100%;
+  border-radius: 0;
   min-height: 90vh;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: none;
   background-color: #ffff;
+  margin: 10px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
+
 
 .gallery_head {
   justify-content: space-between;
@@ -32,24 +36,24 @@
   flex-direction: column;
 }
 
-.g_function_details > P {
+.g_function_details>P {
   text-align: right;
 }
 
-.g_function_details > p:nth-child(1) {
+.g_function_details>p:nth-child(1) {
   font-size: 16px;
   font-weight: 900;
 }
 
-.g_function_details > p:nth-child(2) {
+.g_function_details>p:nth-child(2) {
   font-size: 10px;
 }
 
-.g_function_details > p:nth-child(3) {
+.g_function_details>p:nth-child(3) {
   font-size: 10px;
 }
 
-.g_function_details > p:nth-child(4) {
+.g_function_details>p:nth-child(4) {
   font-size: 10px;
 }
 
@@ -57,9 +61,12 @@
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding: 20px 5px;
+  padding: 30px 10px;
   gap: 25px;
+  max-width: 100vw;
+  margin: 0 auto;
 }
+
 
 .photo {
   border-radius: 7px;
@@ -138,19 +145,20 @@
 }
 
 .gratitude {
-  margin-top: 25px;
+  margin: 25px;
   font-size: 12px;
   text-align: center;
 }
 
 .masonry-grid {
   display: flex;
-  margin-left: -16px; 
-  width: auto;
+  margin-left: -16px;
+  width: 90%;
 }
 
+
 .masonry-grid_column {
-  padding-left: 16px; 
+  padding-left: 16px;
   background-clip: padding-box;
 }
 
@@ -166,13 +174,27 @@
   animation: pulse 1.5s infinite ease-in-out;
 }
 
+@media (min-width: 1400px) {
+  .photo {
+    width: 100%;
+    /* allow masonry to control layout */
+    max-width: none;
+  }
+
+  .masonry-grid_column {
+    padding-left: 10px;
+  }
+}
+
 @keyframes pulse {
   0% {
     background-color: #e0e0e0;
   }
+
   50% {
     background-color: #f0f0f0;
   }
+
   100% {
     background-color: #e0e0e0;
   }
@@ -184,11 +206,11 @@
     padding: 10px 5px;
   }
 
-  .g_function_details > p:nth-child(1) {
+  .g_function_details>p:nth-child(1) {
     font-size: 11px;
   }
 
-  .g_function_details > p:nth-child(2) {
+  .g_function_details>p:nth-child(2) {
     font-size: 9px;
   }
 
@@ -209,3 +231,4 @@
     width: 100% !important;
   }
 }
+

@@ -23,3 +23,10 @@ p,h1,h2,h3,h4{
 button{
   padding: 3px 5px;
 }
+
+.custom-toast {
+  background-color:green;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+}
