@@ -63,7 +63,7 @@ const AdminTable = ({
                     </td>
                     <td>{user.userId}</td>
                     <td>{hasGalleryItems(user.events)}</td>
-                    <td>
+                    <td className="event_row">
                       {user.events.length > 0 ? (
                         <button
                           className="event_show_button"
@@ -78,7 +78,7 @@ const AdminTable = ({
                         <p className="no_event">No events</p>
                       )}
                     </td>
-                    <td>
+                    <td >
                       <button
                         className={`${user.frozen ? "unfreeze" : "freeze"}`}
                         onClick={() =>

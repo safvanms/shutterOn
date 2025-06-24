@@ -36,12 +36,48 @@
   .random_images_heading {
     padding: 20px 0 0 20px;
   }
+
   .random_photos {
     padding: 20px 0;
   }
+
   .random_photos img {
     width: 45%;
     height: 250px;
     object-fit: cover;
+  }
+}
+
+
+.random_photo_container {
+  width: 31%;
+  height: 300px;
+  overflow: hidden;
+  /* this clips the image scale on hover */
+  border-radius: 6px;
+  /* optionally, you can add margin or gap here if needed */
+}
+
+.random_photo_container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5);
+  transition: transform 0.3s ease, filter 0.3s ease;
+  display: block;
+  /* removes inline gap issues */
+}
+
+.random_photo_container:hover img {
+  filter: brightness(0.5);
+  transition: transform 0.3s ease, filter 0.3s ease;
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 799px) {
+  .random_photo_container {
+    width: 45%;
+    height: 250px;
   }
 }

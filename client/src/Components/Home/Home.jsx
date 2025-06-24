@@ -32,13 +32,17 @@ const Home = () => {
   }, [images.length]);
 
   const handleChange = (e) => {
-    const { value } = e.target;
-
-    setFunctionId(value);
+    let { value } = e.target;
+    // Remove spaces and apostrophes, and convert to lowercase
     const sanitizedValue = value.toLowerCase().replace(/[\s']/g, "");
 
+    setFunctionId(sanitizedValue);
+
+    // Set error only if user tried to input invalid characters
     if (sanitizedValue !== value) {
-      setFunctionIdError("Not accepts Uppercase letter,space or apostrophe");
+      setFunctionIdError(
+        "Only lowercase letters and numbers allowed. No spaces or apostrophes."
+      );
     } else {
       setFunctionIdError(null);
     }
@@ -82,8 +86,10 @@ const Home = () => {
                 value={functionId}
                 onChange={handleChange}
                 name="function_id"
-                style={{ outline: functionIdError && "2px solid red" }}
                 onKeyDown={handleKeyDown}
+                style={{ outline: functionIdError && "2px solid red" }}
+                pattern="[a-z0-9]*"
+                inputMode="lowercase"
               />
               {!functionIdError && functionId !== " " && functionId && (
                 <button type="submit" className="function_btn">

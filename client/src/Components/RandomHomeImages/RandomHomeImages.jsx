@@ -25,7 +25,9 @@ const RandomHomeImages = () => {
       </div>
       <div className="random_photos Flex">
         {randomImages?.map((item, i) => (
-          <img key={i} src={item} alt="home" loading="lazy" />
+          <div key={i} className="random_photo_container">
+            <img src={item} alt="home" loading="lazy" />
+          </div>
         ))}
       </div>
     </>

@@ -60,7 +60,9 @@
 
 .table {
   min-width: 1250px !important;
+  min-height: 500px;
 }
+
 
 .admin_table table {
   width: 100%;
@@ -108,11 +110,15 @@
 }
 
 .name_row {
-  width: 150px;
+  width: 250px;
 }
 
 .mail_row {
-  width: 250px;
+  width: 300px;
+}
+
+.event_row{
+  width: 120px;
 }
 
 .admin_table td:nth-child(7) {

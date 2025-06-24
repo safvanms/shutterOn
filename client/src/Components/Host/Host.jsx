@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./host.css";
 import axios from "../../axiosInstance";
 import { useNavigate, useParams } from "react-router-dom";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
 import Loader from "../Loader/Loader";
+import Masonry from "react-masonry-css";
 
 const Host = () => {
   const [functionData, setFunctionData] = useState(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
-  const [cld, setCld] = useState(null);
+  const [, setCld] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  console.log(cld);
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1,
+  };
 
   useEffect(() => {
     setCld(new Cloudinary({ cloud: { cloudName: "dqkb2musv" } }));
@@ -34,9 +40,15 @@ const Host = () => {
       .get(`/host/${userId}/${functionID}`)
       .then((response) => {
         setFunctionData(response.data);
-        setGalleryPhotos(response.data.gallery); // Set gallery photos
+        setGalleryPhotos(response.data.gallery);
         if (response.data.paymentStatus === false) {
           navigate("/", { replace: true });
+        }
+        if (response.frozen) {
+          alert(
+            "Your account is currently frozen. You cannot access this content."
+          );
+          return;
         }
       })
       .catch((error) => {
@@ -49,7 +61,14 @@ const Host = () => {
       .get(`/users/${userId}`)
       .then((response) => {
         setUser(response.data);
+        if (response.frozen) {
+          alert(
+            "Your account is currently frozen. You cannot access this content."
+          );
+          return;
+        }
       })
+
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
@@ -57,7 +76,7 @@ const Host = () => {
 
   const handleFileChange = (e) => {
     setSelectedPhoto(e.target.files[0]);
-    setConfirmed(false)
+    setConfirmed(false);
   };
 
   const handleConfirmPhoto = () => {
@@ -77,6 +96,12 @@ const Host = () => {
         .then((response) => {
           const imageUrl = response.data.imageUrl;
 
+          if (response.frozen) {
+            alert(
+              "Your account is currently frozen. You cannot access this content."
+            );
+            return;
+          }
           //  Update gallery in server with Cloudinary URL
           axios
             .post(`/update-gallery`, {
@@ -100,8 +125,8 @@ const Host = () => {
           console.error("Error uploading photo to Cloudinary:", error);
           setIsLoading(false);
           alert("upload less sized images than 10MB ");
-          setConfirmed(false)
-          setSelectedPhoto(null)
+          setConfirmed(false);
+          setSelectedPhoto(null);
         });
     }
   };
@@ -155,73 +180,67 @@ const Host = () => {
       {/* uploading section  */}
 
       <div className="host">
-        <div
-          className={`add_photo_option Flex ${
-            user && user.frozen ? "disabled" : ""
-          }`}
-        >
-          <label htmlFor="fileInput" className="custom_file_input">
-            Choose a Photo
-          </label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            accept="image/*"
-            disabled={user && user.frozen}
-          />
-          {selectedPhoto && (
-            <div className="photo_preview Flex">
-              <img
-                src={URL.createObjectURL(selectedPhoto)}
-                alt="Selected"
-                className="sample_of_image"
-              />
-              {!confirmed ? (
-                <button className="confirm_btn" onClick={handleConfirmPhoto}>
-                  Confirm to Add
-                </button>
-              ) : (
-                <p style={{ cursor: "not-allowed" }}>Uploading...</p>
-              )}
-            </div>
-          )}
-        </div>
+        {!user?.frozen && (
+          <div
+            className={`add_photo_option Flex ${
+              user && user.frozen ? "disabled" : ""
+            }`}
+          >
+            <label htmlFor="fileInput" className="custom_file_input">
+              Choose a Photo
+            </label>
+            <input type="file" onChange={handleFileChange} accept="image/*" />
+            {selectedPhoto && (
+              <div className="photo_preview Flex">
+                <img
+                  src={URL.createObjectURL(selectedPhoto)}
+                  alt="Selected"
+                  className="sample_of_image"
+                />
+                {!confirmed ? (
+                  <button className="confirm_btn" onClick={handleConfirmPhoto}>
+                    Confirm to Add
+                  </button>
+                ) : (
+                  <p style={{ cursor: "not-allowed" }}>Uploading...</p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {isLoading && <Loader message={"Please Wait..."} />}
 
         {/* showing uploaded photos */}
 
-        <div className="gallery_photos Flex">
+        <div className="gallery_photos">
           {galleryPhotos.length > 0 ? (
-            galleryPhotos.map((photo, index) => (
-              <div key={index} className="added_image">
-                <img
-                  className="added_image_img"
-                  src={photo}
-                  alt={`Gallery_${index}`}
-                  loading="lazy"
-                />
-                {!user?.frozen && (
-                  <div
-                    className="delete_added_image Flex"
-                    onClick={() => !user.frozen && handleDeletePhoto(photo)}
-                  >
-                    <MdDelete size={16} color="white" />
-                    <p>Delete</p>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p>Add photos . </p>
-          )}
-          {user?.frozen && (
-            <p
-              style={{ textAlign: "center", fontSize: "12px", width: "250px" }}
+            <Masonry
+              breakpointCols={breakpointColumnsObj}
+              className="masonry-grid"
+              columnClassName="masonry-grid_column"
             >
-              You cant add / delete your galley at the moment , because you're
-              frozen .
-            </p>
+              {galleryPhotos.map((photo, index) => (
+                <div key={index} className="added_image">
+                  <img
+                    className="added_image_img"
+                    src={photo}
+                    alt={`Gallery_${index}`}
+                  />
+                  {!user?.frozen && (
+                    <div
+                      className="delete_added_image Flex"
+                      onClick={() => handleDeletePhoto(photo)}
+                    >
+                      <MdDelete size={16} color="white" />
+                      <p>Delete</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </Masonry>
+          ) : (
+            <p>Add photos.</p>
           )}
         </div>
       </div>
@@ -230,6 +249,20 @@ const Host = () => {
 
       <div className="function_details Flex">
         <div className="hosting_details">
+          {user?.frozen && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "12px",
+                width: "250px",
+                marginBottom: "5px",
+                color: "red",
+              }}
+            >
+              You can't add or delete your gallery at the moment because you're
+              frozen.
+            </p>
+          )}
           {functionData && (
             <>
               <div>
