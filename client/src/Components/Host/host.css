@@ -90,7 +90,7 @@
   width: 90px !important;
 }
 
-.disabled{
+.disabled {
   background-color: #aaaaaa;
 }
 
@@ -109,6 +109,7 @@
   width: 100%;
   max-width: 100%;
   border: 1px solid #aaaaaa74;
+  min-height: 200px;
 }
 
 
@@ -169,12 +170,14 @@
 
 .masonry-grid {
   display: flex;
-  margin-left: -16px; /* gutter size offset */
+  margin-left: -16px;
+  /* gutter size offset */
   width: auto;
 }
 
 .masonry-grid_column {
-  padding-left: 16px; /* gutter size */
+  padding-left: 16px;
+  /* gutter size */
   background-clip: padding-box;
 }
 
@@ -198,9 +201,9 @@
   }
 
   .hosting_page_head {
-   margin: 10px;
+    margin: 10px;
   }
-  
+
 }
 
 @media (max-width: 449px) {

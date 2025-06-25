@@ -6,6 +6,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { MdDelete } from "react-icons/md";
 import Loader from "../Loader/Loader";
 import Masonry from "react-masonry-css";
+import { toast, ToastContainer } from "react-toastify";
 
 const Host = () => {
   const [functionData, setFunctionData] = useState(null);
@@ -16,6 +17,7 @@ const Host = () => {
   const [deleted, setDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [isGalleryTimeoutDone, setIsGalleryTimeoutDone] = useState(false);
 
   const breakpointColumnsObj = {
     default: 4,
@@ -32,18 +34,28 @@ const Host = () => {
 
   const navigate = useNavigate();
 
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsLoading(true);
+    const timeoutId = setTimeout(() => {
+      setIsGalleryTimeoutDone(true);
+      setIsLoading(false);
+    }, 10000); 
 
-    // Fetch function data and gallery photos
     axios
       .get(`/host/${userId}/${functionID}`)
       .then((response) => {
+        clearTimeout(timeoutId); 
         setFunctionData(response.data);
         setGalleryPhotos(response.data.gallery);
+        setIsGalleryTimeoutDone(true);
+        setIsLoading(false);
+
         if (response.data.paymentStatus === false) {
           navigate("/", { replace: true });
         }
+
         if (response.frozen) {
           alert(
             "Your account is currently frozen. You cannot access this content."
@@ -54,9 +66,11 @@ const Host = () => {
       .catch((error) => {
         console.error("Error fetching function data:", error);
         navigate("/", { replace: true });
+        clearTimeout(timeoutId);
+        setIsGalleryTimeoutDone(true);
+        setIsLoading(false);
       });
 
-    // Fetch user data to check if the user is frozen
     axios
       .get(`/users/${userId}`)
       .then((response) => {
@@ -65,13 +79,13 @@ const Host = () => {
           alert(
             "Your account is currently frozen. You cannot access this content."
           );
-          return;
         }
       })
-
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+
+    return () => clearTimeout(timeoutId); // cleanup on unmount
   }, [userId, functionID, deleted, navigate]);
 
   const handleFileChange = (e) => {
@@ -115,6 +129,7 @@ const Host = () => {
               setSelectedPhoto(null);
               setConfirmed(false);
               setIsLoading(false);
+              toast.success("Image added successfully!");
             })
             .catch((error) => {
               console.error("Error updating gallery:", error);
@@ -150,6 +165,7 @@ const Host = () => {
           );
           setDeleted(true);
           setIsLoading(false);
+          toast.success("Image eleted successfully!");
         })
         .catch((error) => {
           console.error("Error deleting photo:", error);
@@ -169,6 +185,7 @@ const Host = () => {
 
   return (
     <div className="hosting_page_wrapper">
+      <ToastContainer position="bottom-right" autoClose={2000} />
       <div className="hosting_page_head Flex">
         {functionData && (
           <div className="Flex">
@@ -225,7 +242,8 @@ const Host = () => {
                   <img
                     className="added_image_img"
                     src={photo}
-                    alt={`Gallery_${index}`}
+                    alt={`${functionData?.functionName}_${index}`}
+                    placeholder={<div className="image-skeleton"></div>}
                   />
                   {!user?.frozen && (
                     <div
@@ -239,7 +257,7 @@ const Host = () => {
                 </div>
               ))}
             </Masonry>
-          ) : (
+          ) :  isGalleryTimeoutDone && galleryPhotos.length === 0 &&(
             <p>Add photos.</p>
           )}
         </div>

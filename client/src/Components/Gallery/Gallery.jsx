@@ -8,9 +8,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import PrivatePin from "../PrivatePin/PrivatePin";
 import Masonry from "react-masonry-css";
 import { MdOutlineFileDownload } from "react-icons/md";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Gallery = () => {
   const [galleryImages, setGalleryImages] = useState([]);
@@ -97,34 +96,32 @@ const Gallery = () => {
     500: 1,
   };
 
+  const handleDownload = async (imageUrl) => {
+    try {
+      const response = await fetch(imageUrl, { mode: "cors" });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
 
- const handleDownload = async (imageUrl) => {
-  try {
-    const response = await fetch(imageUrl, { mode: "cors" });
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `photo_${Date.now()}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `photo_${Date.now()}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
 
-    window.URL.revokeObjectURL(url);
-
-    toast.success("Image downloaded successfully!");
-  } catch (error) {
-    console.error("Download failed:", error);
-    toast.error("Failed to download image. Please try again.");
-  }
-};
-
+      toast.success("Image downloaded successfully!");
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Failed to download image. Please try again.");
+    }
+  };
 
   return (
     <>
-      <div className="gallery Flex">
       <ToastContainer position="bottom-right" autoClose={2000} />
+      <div className="gallery Flex">
         <div className="gallery_container">
           {!wrongId && eventPinVerified ? (
             <>
@@ -186,7 +183,7 @@ const Gallery = () => {
             </>
           ) : wrongId ? (
             <div>
-              <h3 style={{ textAlign: "center" }}>
+              <h3 style={{ textAlign: "center", marginTop: "50px" }}>
                 Sorry. This is a wrong ID or PIN!
               </h3>
               <p className="re_enter" onClick={() => navigate("/")}>
